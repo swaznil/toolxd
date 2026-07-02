@@ -2,23 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>ToolXD</title>
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
+  <div class="bg-grid"></div>
+  <div class="gradient gradient-1"></div>
+  <div class="gradient gradient-2"></div>
   <div class="noise"></div>
 
-  <header class="hero">
+  <header>
 
     <nav>
       <div class="logo">
@@ -27,86 +30,143 @@
 
       <div class="nav-links">
         <a href="#">Tools</a>
-        <a href="#">About</a>
+        <a href="#">Collections</a>
         <a href="#">Github</a>
       </div>
     </nav>
 
-    <div class="hero-content">
+    <section class="hero">
 
       <p class="eyebrow">
         Browser Utilities
       </p>
 
       <h1>
-        Useful tools.<br>
+        Useful tools,<br>
         Beautifully minimal.
       </h1>
 
       <p class="hero-text">
-        | A collection of browser-based utilities designed with 
-        speed, clean simplicity, and premium experince in mind |
+        || A collection of browser-based utilities designed with 
+        speed, clean simplicity, and premium experince in mind ||
       </p>
 
-    </div>
+    </section>
 
   </header>
 
-  <main class="grid-layout">
+  <main class="bento-grid">
 
-    <a href="#" class="tool-card large">
-      <span class="tool-icon">⌘</span>
+    <a href="#" class="card password-card">
+        <div class="password-preview">
+            <div class="password-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
 
-      <div>
-        <h2>Password Generator</h2>
-        <p>Create strong secure passwords instantly.</p>
-      </div>
+            <div class="password-line"></div>
+        </div>
+
+        <div class="content">
+            <h3>Password Generator</h3>
+            <p>Generate secure passwords with custom length, symbols, and strength presets.</p>
+        </div>
     </a>
 
-    <a href="#" class="tool-card">
-      <span class="tool-icon">◈</span>
+  <a href="#" class="card qr-card">
 
-      <div>
-        <h2>QR Generator</h2>
-        <p>Generate QR codes from text or links.</p>
+    <div class="mini-icon">
+      <div class="qr-shape"></div>
+    </div>
+
+    <div class="content">
+      <h3>QR Generator</h3>
+      <p>Create elegant QR codes instantly.</p>
+    </div>
+  </a>
+
+  <a href="#" class="card timer-card">
+    <div class="timer-ring">
+      <div class="inner-ring"></div>
+    </div>
+
+    <div class="content">
+      <h3>Pomodoro</h3>
+      <p>Focus timer with distraction-free sessions.</p>
+    </div>
+  </a>
+
+  <a href="#" class="card metadata-card">
+
+    <div class="fake-window">
+      <div class="window-top">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-    </a>
 
-    <a href="#" class="tool-card">
-      <span class="tool-icon">◎</span>
-
-      <div>
-        <h2>Metadata Viewer</h2>
-        <p>Inspect image and file metadata locally.</p>
+      <div class="window-lines">
+        <div></div>
+        <div></div>
+        <div></div>
       </div>
-    </a>
+    </div>
 
-    <a href="#" class="tool-card wide">
-      <span class="tool-icon"></span>
+    <div class="content">
+      <h3>Metadata Viewer</h3>
+      <p>Inspect EXIF and hidden file information.</p>
+    </div>
 
-      <div>
-        <h2></h2>
-        <p></p>
-      </div>
-    </a>
+  </a>
 
-    <a href="#" class="tool-card">
-      <span class="tool-icon"></span>
+  <a href="#" class="card json-card">
 
-      <div>
-        <h2></h2>
-        <p></p>
-      </div>
-    </a>
+    <div class="code-preview">
+      <span>{</span>
+      <span>"clean"</span>
+      <span>: true</span>
+      <span>}</span>
+    </div>
 
-    <a href="#" class="tool-card">
-      <span class="tool-icon"></span>
+    <div class="content">
+      <h3>JSON Formatter</h3>
+      <p>Beautify and validate JSON instantly.</p>
+    </div>
 
-      <div>
-        <h2></h2>
-        <p></p>
-      </div>
-    </a>
+  </a>
+
+  <a href="#" class="card text-card">
+
+    <div class="text-preview">
+      <span>Aa</span>
+      <span>⇄</span>
+      <span>AA</span>
+    </div>
+
+    <div class="content">
+      <h3>Text Tools</h3>
+      <p>Transform text formats and clean content.</p>
+    </div>
+
+  </a>
+
+  <a href="#" class="card palette-card">
+
+    <div class="palette">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="content">
+      <h3>Color Palette</h3>
+      <p>Generate aesthetic color combinations.</p>
+    </div>
+  </a>
 
   </main>
 
