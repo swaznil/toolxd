@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>ToolXD • Stopwatch</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="timer.css">
+</head>
+
+<body>
+
+<main class="page">
+
+  <nav>
+
+    <div class="logo">
+      ToolXD
+    </div>
+
+    <a href="#" class="back">
+      ← Back
+    </a>
+
+  </nav>
+
+  <section class="layout">
+
+    <!-- LEFT -->
+
+    <div class="left">
+
+      <div class="eyebrow">
+        Precision Utility /// Minimal Motion
+      </div>
+
+      <h1>
+        Time,<br>
+        elevated.
+      </h1>
+
+      <p class="desc">
+        Editorial-inspired stopwatch and timer experience with subtle motion,
+        vibrant accent color and tactile keyboard control.
+        Designed to feel cinematic, lightweight and beautifully engineered.
+      </p>
+
+      <div class="meta">
+
+        <div class="line"></div>
+
+        <span>
+          Stopwatch • Timer
+        </span>
+
+        <div class="line"></div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="panel">
+
+      <div class="splash splash-1"></div>
+      <div class="splash splash-2"></div>
+
+      <!-- TABS -->
+
+      <div class="tabs">
+
+        <button class="tab active" data-mode="stopwatch">
+          Stopwatch
+        </button>
+
+        <button class="tab" data-mode="timer">
+          Timer
+        </button>
+
+      </div>
+
+      <!-- WATCH -->
+
+      <div class="watch">
+
+        <div class="orbit"></div>
+
+        <div class="bubble" id="bubble"></div>
+
+        <div class="center">
+
+          <div class="time" id="display">
+            00:00:00
+          </div>
+
+          <div class="ms" id="subDisplay">
+            000
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TIMER -->
+
+      <div class="timer-inputs" id="timerInputs">
+
+        <input type="number" id="hours" min="0" value="0">
+
+        <input type="number" id="minutes" min="0" value="5">
+
+        <input type="number" id="seconds" min="0" value="0">
+
+      </div>
+
+      <!-- CONTROLS -->
+
+      <div class="controls">
+
+        <button class="btn primary" id="startBtn">
+          Start
+        </button>
+
+        <button class="btn secondary" id="lapBtn">
+          Lap
+        </button>
+
+        <button class="btn secondary" id="resetBtn">
+          Reset
+        </button>
+
+      </div>
+
+      <!-- LAPS -->
+
+      <div class="laps" id="laps"></div>
+
+      <!-- SHORTCUTS -->
+
+      <div class="shortcuts">
+
+        <span>
+          <kbd>Space</kbd>
+          Start / Pause
+        </span>
+
+        <span>
+          <kbd>R</kbd>
+          Reset
+        </span>
+
+        <span>
+          <kbd>L</kbd>
+          Lap
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<script src="timer.js"></script>
+
+</body>
+</html>
