@@ -12,6 +12,10 @@ toolxd
 ├── js
 │   └── script.js
 └── tools
+    ├── metadata
+    │   ├── metadata.html
+    │   ├── metadata.js
+    │   └── metadataview.css
     ├── passwordgen
     │   ├── passwordgen.css
     │   ├── passwordgen.html
