@@ -12,6 +12,10 @@ toolxd
 ├── js
 │   └── script.js
 └── tools
-    ├── passwordgen.html
-    └── timer.html
+    ├── passwordgen
+    │   └── passwordgen.html
+    └── timer
+        ├── timer.css
+        ├── timer.html
+        └── timer.js
 ```
