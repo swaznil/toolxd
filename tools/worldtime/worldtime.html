@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ToolXD • World Time</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="worldtime.css">
+
+</head>
+
+<body>
+
+  <div class="grid"></div>
+
+  <main class="page">
+
+    <nav>
+
+      <div class="logo">
+        ToolXD
+      </div>
+
+      <a href="../../index.html" class="back">
+        ← Back
+      </a>
+
+    </nav>
+
+    <header class="hero">
+
+      <div>
+
+        <div class="eyebrow">
+          World Time /// Interactive Timezone Atlas
+        </div>
+
+        <h1>
+          Time,<br>
+          mapped globally.
+        </h1>
+
+      </div>
+
+      <div class="search-wrap">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search city or country..."
+          autocomplete="off"
+        >
+
+        <div class="search-results" id="searchResults"></div>
+
+      </div>
+
+    </header>
+
+    <section class="map-wrapper">
+
+      <svg
+        viewBox="0 0 1600 800"
+        class="timezone-map"
+        id="map"
+        preserveAspectRatio="xMidYMid meet"
+      >
+
+        <rect class="ocean" x="0" y="0" width="1600" height="800"></rect>
+
+        <g id="tzBands">
+          <!-- 24 x 15° timezone bands injected by JS -->
+        </g>
+
+        <image
+          class="continents"
+          href="world.svg"
+          x="0"
+          y="0"
+          width="1600"
+          height="800"
+          preserveAspectRatio="none"
+        />
+
+        <g id="graticule">
+          <!-- equator + prime meridian, built from the same
+               projection the city dots use, so it can never drift -->
+        </g>
+
+        <rect class="map-frame" x="0" y="0" width="1600" height="800"></rect>
+
+        <g id="cityLayer">
+          <!-- city markers injected by JS -->
+        </g>
+
+      </svg>
+
+      <div class="tooltip" id="tooltip"></div>
+
+    </section>
+
+    <footer class="dock">
+
+      <div class="dock-block">
+
+        <span>
+          Selected City
+        </span>
+
+        <h2 id="cityName">
+          —
+        </h2>
+
+      </div>
+
+      <div class="dock-block">
+
+        <span>
+          Local Time
+        </span>
+
+        <h2 id="time">
+          --:--:--
+        </h2>
+
+      </div>
+
+      <div class="dock-block">
+
+        <span>
+          UTC Offset
+        </span>
+
+        <h2 id="offset">
+          —
+        </h2>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+  <script src="worldtime.js"></script>
+
+</body>
+</html>
