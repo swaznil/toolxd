@@ -4,7 +4,7 @@ const fileName = document.getElementById("fileName");
 const fileType = document.getElementById("fileType");
 const fileSize = document.getElementById("fileSize");
 const fileModified = document.getElementById("fileModified");
-
+const uploadZone = document.querySelector(".upload-zone");
 
 function add(data, key, value) {
   if (
@@ -132,6 +132,34 @@ async function getTextData(file) {
     First1000Characters: text.slice(0, 1000),
   };
 }
+
+["dragenter", "dragover"].forEach((eventName) => {
+  uploadZone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    uploadZone.classList.add("dragging");
+  });
+});
+
+["dragleave", "dragend", "drop"].forEach((eventName) => {
+  uploadZone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    uploadZone.classList.remove("dragging");
+  });
+});
+
+uploadZone.addEventListener("drop", async (e) => {
+  const file = e.dataTransfer.files[0];
+
+  if (!file) return;
+
+  fileInput.files = e.dataTransfer.files;
+
+  fileInput.dispatchEvent(new Event("change"));
+});
 
 fileInput.addEventListener("change", async (e) => {
   const file = e.target.files[0];
