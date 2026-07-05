@@ -1,63 +1,8 @@
-:root {
-  --bg: #f5f3ee;
-  --panel: rgba(255, 255, 255, 0.7);
-  --line: rgba(0, 0, 0, 0.08);
-  --text: #111;
-  --muted: #6d6d6d;
-  --accent: #2453ff;
-  --accent-soft: rgba(36, 83, 255, 0.1);
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html {
-  scroll-behavior: smooth;
-}
 body {
-  background: var(--bg);
-  font-family: "Inter", sans-serif;
-  color: var(--text);
-  min-height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
-::selection{
-  background:#000;
-  color:#fff;
-}
-.grid {
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
-}
-.ambient {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(90px);
-  pointer-events: none;
-  opacity: 0.5;
-  z-index: 0;
-}
-.ambient-1 {
-  width: 520px;
-  height: 520px;
-  background: rgba(36, 83, 255, 0.15);
-  top: -160px;
-  right: -160px;
-}
-.ambient-2 {
-  width: 420px;
-  height: 420px;
-  background: rgba(0, 0, 0, 0.05);
-  bottom: -120px;
-  left: -120px;
-}
+
 .app {
   position: relative;
   z-index: 2;
@@ -68,31 +13,11 @@ body {
   gap: 1.5rem;
 }
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 2rem;
-}
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1.2rem 2rem;
   margin-bottom: 1rem;
 }
 
-.logo {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-
-.back {
-  text-decoration: none;
-  color: #444;
-  font-size: 1rem;
-  padding-bottom: 0.2rem;
-}
 .search-wrap {
   position: relative;
   width: 420px;
@@ -104,7 +29,7 @@ nav {
   border: none;
   outline: none;
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 20px;
   padding: 0 1.2rem;
   font-size: 0.94rem;
@@ -160,11 +85,7 @@ nav {
   gap: 2rem;
 }
 .eyebrow {
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   font-family: "IBM Plex Mono", monospace;
-  color: #777;
   margin-bottom: 1rem;
 }
 .hero h1 {
@@ -184,7 +105,7 @@ nav {
   gap: 0.65rem;
   padding: 0.8rem 1rem;
   background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.72rem;
   font-family: "IBM Plex Mono", monospace;
@@ -227,11 +148,8 @@ nav {
   align-items: start;
 }
 .panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
   border-radius: 34px;
   padding: 1.5rem;
-  backdrop-filter: blur(20px);
 }
 .clock-panel {
   display: flex;
@@ -247,11 +165,7 @@ nav {
   gap: 1rem;
 }
 .label {
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
   font-family: "IBM Plex Mono", monospace;
-  color: #777;
   margin-bottom: 0.7rem;
 }
 .clock-header h2 {
@@ -388,7 +302,7 @@ nav {
   border: none;
   outline: none;
   background: rgba(255, 255, 255, 0.74);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 18px;
   padding: 0 1rem;
   font-family: "IBM Plex Mono", monospace;
