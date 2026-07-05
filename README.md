@@ -20,8 +20,12 @@ toolxd
     │   ├── passwordgen.css
     │   ├── passwordgen.html
     │   └── passwordgen.js
-    └── timer
-        ├── timer.css
-        ├── timer.html
-        └── timer.js
+    ├── timer
+    │   ├── timer.css
+    │   ├── timer.html
+    │   └── timer.js
+    └── worldtime
+        ├── worldtime.css
+        ├── worldtime.html
+        └── worldtime.js
 ```
