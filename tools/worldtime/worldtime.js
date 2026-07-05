@@ -36,15 +36,53 @@ const CITIES = [
   { name: "Auckland", country: "New Zealand", lat: -36.85, lon: 174.76, tz: "Pacific/Auckland" },
 ];
 
-// Projection matched to the map <image> placed at x0 y110 w1600 h520
-// inside a 1600x760 viewBox (equirectangular, full lon -180..180, lat -90..90).
+const ROBINSON_TABLE = [
+  { lat: 0, x: 1.0000, y: 0.0000 },
+  { lat: 5, x: 0.9986, y: 0.0620 },
+  { lat: 10, x: 0.9954, y: 0.1240 },
+  { lat: 15, x: 0.9900, y: 0.1860 },
+  { lat: 20, x: 0.9822, y: 0.2480 },
+  { lat: 25, x: 0.9730, y: 0.3100 },
+  { lat: 30, x: 0.9600, y: 0.3720 },
+  { lat: 35, x: 0.9427, y: 0.4340 },
+  { lat: 40, x: 0.9216, y: 0.4958 },
+  { lat: 45, x: 0.8962, y: 0.5571 },
+  { lat: 50, x: 0.8679, y: 0.6176 },
+  { lat: 55, x: 0.8350, y: 0.6769 },
+  { lat: 60, x: 0.7986, y: 0.7346 },
+  { lat: 65, x: 0.7597, y: 0.7903 },
+  { lat: 70, x: 0.7186, y: 0.8435 },
+  { lat: 75, x: 0.6732, y: 0.8936 },
+  { lat: 80, x: 0.6213, y: 0.9394 },
+  { lat: 85, x: 0.5722, y: 0.9761 },
+  { lat: 90, x: 0.5322, y: 1.0000 },
+];
+
+const MAP_WIDTH = 1600;
+const MAP_HEIGHT = 800;
+
 function project(lat, lon) {
-  const x = ((lon + 180) / 360) * 1600;
-  const y = 110 + ((90 - lat) / 180) * 520;
+  const clampedLat = Math.max(-90, Math.min(90, lat));
+  const absLat = Math.abs(clampedLat);
+  let i = Math.floor(absLat / 5);
+  if (i >= ROBINSON_TABLE.length - 1) i = ROBINSON_TABLE.length - 2;
+  const t = (absLat - ROBINSON_TABLE[i].lat) / 5;
+
+  const xScale = ROBINSON_TABLE[i].x + (ROBINSON_TABLE[i + 1].x - ROBINSON_TABLE[i].x) * t;
+  const yScale = ROBINSON_TABLE[i].y + (ROBINSON_TABLE[i + 1].y - ROBINSON_TABLE[i].y) * t;
+
+  const lonRad = (lon * Math.PI) / 180;
+  const xNorm = (lonRad / Math.PI) * xScale;
+  const yNorm = (clampedLat < 0 ? -1 : 1) * yScale;
+
+  const x = (MAP_WIDTH / 2) * (1 + xNorm);
+  const y = (MAP_HEIGHT / 2) * (1 - yNorm);
   return { x, y };
 }
 
 const NS = "http://www.w3.org/2000/svg";
+const tzBandsLayer = document.getElementById("tzBands");
+const graticule = document.getElementById("graticule");
 const cityLayer = document.getElementById("cityLayer");
 const tooltip = document.getElementById("tooltip");
 const mapWrapper = document.querySelector(".map-wrapper");
@@ -52,9 +90,89 @@ const cityNameEl = document.getElementById("cityName");
 const timeEl = document.getElementById("time");
 const offsetEl = document.getElementById("offset");
 const searchInput = document.getElementById("searchInput");
+const searchResults = document.getElementById("searchResults");
 
 let activeCity = null;
+let highlightedIndex = -1;
+let currentMatches = [];
 const cityEls = [];
+const bandEls = [];
+
+function buildGraticule() {
+  [0].forEach(() => {
+    const top = project(90, 0);
+    const bottom = project(-90, 0);
+    const meridian = document.createElementNS(NS, "line");
+    meridian.setAttribute("x1", top.x);
+    meridian.setAttribute("y1", top.y);
+    meridian.setAttribute("x2", bottom.x);
+    meridian.setAttribute("y2", bottom.y);
+    meridian.setAttribute("class", "grat-line");
+    graticule.appendChild(meridian);
+
+    const left = project(0, -180);
+    const right = project(0, 180);
+    const equator = document.createElementNS(NS, "line");
+    equator.setAttribute("x1", left.x);
+    equator.setAttribute("y1", left.y);
+    equator.setAttribute("x2", right.x);
+    equator.setAttribute("y2", right.y);
+    equator.setAttribute("class", "grat-line");
+    graticule.appendChild(equator);
+  });
+}
+
+function buildTimezoneBands() {
+  for (let i = 0; i < 24; i++) {
+    const lonStart = -180 + i * 15;
+    const lonEnd = lonStart + 15;
+    const offset = i - 12;
+    const x1 = project(0, lonStart).x;
+    const x2 = project(0, lonEnd).x;
+
+    const rect = document.createElementNS(NS, "rect");
+    rect.setAttribute("x", x1);
+    rect.setAttribute("y", 0);
+    rect.setAttribute("width", x2 - x1);
+    rect.setAttribute("height", 800);
+    rect.setAttribute("class", `tz-band ${offset % 2 !== 0 ? "odd" : ""}`.trim());
+    rect.dataset.offset = offset;
+
+    rect.addEventListener("mouseenter", () => highlightBand(offset));
+    rect.addEventListener("mouseleave", clearBandHighlight);
+
+    tzBandsLayer.appendChild(rect);
+    bandEls[i] = rect;
+  }
+}
+
+function highlightBand(offset) {
+  const el = bandEls[offset + 12];
+  if (el) el.classList.add("hovered");
+  cityEls.forEach(({ el: cityEl, city }) => {
+    if (bandIndexForTz(city.tz) === offset) cityEl.classList.add("band-match");
+  });
+}
+
+function clearBandHighlight() {
+  bandEls.forEach((el) => el && el.classList.remove("hovered"));
+  cityEls.forEach(({ el }) => el.classList.remove("band-match"));
+}
+
+function offsetHoursForTz(tz) {
+  const label = offsetLabel(tz); // e.g. "UTC+5:30"
+  const match = label.match(/UTC([+-])(\d+)(?::(\d+))?/);
+  if (!match) return 0;
+  const sign = match[1] === "-" ? -1 : 1;
+  const hours = parseInt(match[2], 10);
+  const minutes = match[3] ? parseInt(match[3], 10) : 0;
+  return sign * (hours + minutes / 60);
+}
+
+function bandIndexForTz(tz) {
+  const hours = offsetHoursForTz(tz);
+  return Math.max(-12, Math.min(11, Math.floor(hours)));
+}
 
 function offsetLabel(tz) {
   try {
@@ -121,9 +239,16 @@ function buildCity(city) {
       activateCity(g, city);
     }
   });
-  g.addEventListener("mouseenter", (e) => showTooltip(e, city));
+  g.addEventListener("mouseenter", (e) => {
+    showTooltip(e, city);
+    const el = bandEls[bandIndexForTz(city.tz) + 12];
+    if (el) el.classList.add("hovered");
+  });
   g.addEventListener("mousemove", (e) => positionTooltip(e));
-  g.addEventListener("mouseleave", hideTooltip);
+  g.addEventListener("mouseleave", () => {
+    hideTooltip();
+    bandEls.forEach((el) => el && el.classList.remove("hovered"));
+  });
   g.addEventListener("focus", (e) => showTooltip(e, city, true));
   g.addEventListener("blur", hideTooltip);
 
@@ -163,12 +288,71 @@ function activateCity(el, city) {
   offsetEl.textContent = offsetLabel(city.tz);
 }
 
+buildTimezoneBands();
+buildGraticule();
 CITIES.forEach(buildCity);
+
+function renderResults(matches) {
+  currentMatches = matches;
+  highlightedIndex = -1;
+  searchResults.innerHTML = "";
+
+  if (matches.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "No cities match.";
+    searchResults.appendChild(empty);
+    searchResults.classList.add("visible");
+    return;
+  }
+
+  matches.forEach(({ city }, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.dataset.index = i;
+
+    const name = document.createElement("span");
+    name.textContent = city.name;
+
+    const country = document.createElement("span");
+    country.className = "country";
+    country.textContent = city.country;
+
+    btn.appendChild(name);
+    btn.appendChild(country);
+    btn.addEventListener("click", () => selectMatch(i));
+    searchResults.appendChild(btn);
+  });
+
+  searchResults.classList.add("visible");
+}
+
+function selectMatch(i) {
+  const match = currentMatches[i];
+  if (!match) return;
+  activateCity(match.el, match.city);
+  searchInput.value = match.city.name;
+  closeResults();
+}
+
+function closeResults() {
+  searchResults.classList.remove("visible");
+  currentMatches = [];
+  highlightedIndex = -1;
+}
+
+function updateHighlight() {
+  const buttons = searchResults.querySelectorAll("button");
+  buttons.forEach((b, i) => b.classList.toggle("highlighted", i === highlightedIndex));
+  if (highlightedIndex >= 0 && buttons[highlightedIndex]) {
+    buttons[highlightedIndex].scrollIntoView({ block: "nearest" });
+  }
+}
 
 searchInput.addEventListener("input", () => {
   const value = searchInput.value.trim().toLowerCase();
-  const matches = [];
 
+  const matches = [];
   cityEls.forEach(({ el, city }) => {
     const haystack = `${city.name} ${city.country}`.toLowerCase();
     const isMatch = value.length === 0 || haystack.includes(value);
@@ -176,8 +360,41 @@ searchInput.addEventListener("input", () => {
     if (isMatch && value.length > 0) matches.push({ el, city });
   });
 
-  if (matches.length === 1) {
-    activateCity(matches[0].el, matches[0].city);
+  if (value.length === 0) {
+    closeResults();
+  } else {
+    renderResults(matches);
+  }
+});
+
+searchInput.addEventListener("focus", () => {
+  if (searchInput.value.trim().length > 0 && currentMatches.length > 0) {
+    searchResults.classList.add("visible");
+  }
+});
+
+searchInput.addEventListener("keydown", (e) => {
+  if (!searchResults.classList.contains("visible") || currentMatches.length === 0) return;
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    highlightedIndex = Math.min(highlightedIndex + 1, currentMatches.length - 1);
+    updateHighlight();
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    highlightedIndex = Math.max(highlightedIndex - 1, 0);
+    updateHighlight();
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    selectMatch(highlightedIndex >= 0 ? highlightedIndex : 0);
+  } else if (e.key === "Escape") {
+    closeResults();
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".search-wrap")) {
+    closeResults();
   }
 });
 
@@ -188,6 +405,33 @@ setInterval(() => {
   }
 }, 1000);
 
-// Default selection on load
-const defaultCity = cityEls.find((c) => c.city.name === "London") || cityEls[0];
+function pickDefaultCity() {
+  let browserTz;
+  try {
+    browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {
+    browserTz = null;
+  }
+
+  if (browserTz) {
+    const exact = cityEls.find((c) => c.city.tz === browserTz);
+    if (exact) return exact;
+
+    const browserOffset = offsetHoursForTz(browserTz);
+    let closest = null;
+    let closestDiff = Infinity;
+    cityEls.forEach((c) => {
+      const diff = Math.abs(offsetHoursForTz(c.city.tz) - browserOffset);
+      if (diff < closestDiff) {
+        closestDiff = diff;
+        closest = c;
+      }
+    });
+    if (closest) return closest;
+  }
+
+  return cityEls.find((c) => c.city.name === "London") || cityEls[0];
+}
+
+const defaultCity = pickDefaultCity();
 activateCity(defaultCity.el, defaultCity.city);
