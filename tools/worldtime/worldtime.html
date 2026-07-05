@@ -1,158 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <meta charset="UTF-8" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>ToolXD • World Time</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="worldtime.css">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ToolXD • World Time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="worldtime.css">
 </head>
-
 <body>
+<div class="grid"></div>
 
-  <div class="grid"></div>
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
 
-  <main class="page">
+<main class="app">
 
-    <nav>
+<nav class="topbar">
+<div class="logo">ToolXD</div>
 
-      <div class="logo">
-        ToolXD
-      </div>
+<div class="search-wrap">
+<input type="text" id="searchInput" placeholder="Search any city or timezone..." autocomplete="off">
+<div class="search-results" id="searchResults"></div>
+</div>
+</nav>
 
-      <a href="../../index.html" class="back">
-        ← Back
-      </a>
+<section class="hero">
+<div>
+<p class="eyebrow">WORLD TIME /// LIVE GLOBAL CLOCK SYSTEM</p>
+<h1>Track.<br>Compare.<br>Synchronize.</h1>
+</div>
 
-    </nav>
+<div class="hero-side">
+<div class="live-badge">
+<span class="pulse"></span>
+LIVE GLOBAL TIME
+</div>
 
-    <header class="hero">
+<div class="hero-time">
+<h2 id="heroClock">00:00:00</h2>
+<p id="heroDate">Loading...</p>
+</div>
+</div>
+</section>
 
-      <div>
+<section class="layout">
 
-        <div class="eyebrow">
-          World Time /// Interactive Timezone Atlas
-        </div>
+<div class="panel clock-panel">
 
-        <h1>
-          Time,<br>
-          mapped globally.
-        </h1>
+<div class="clock-header">
+<div>
+<p class="label">Selected City</p>
+<h2 id="cityName">Kathmandu</h2>
+</div>
 
-      </div>
+<div class="timezone-chip" id="timezoneChip">
+UTC+5:45
+</div>
+</div>
 
-      <div class="search-wrap">
+<div class="analog-clock">
+<div class="clock-face" id="clockFace">
+<div class="hand hour" id="hourHand"></div>
+<div class="hand minute" id="minuteHand"></div>
+<div class="hand second" id="secondHand"></div>
+<div class="center-dot"></div>
+</div>
+</div>
 
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search city or country..."
-          autocomplete="off"
-        >
+<div class="stats">
+<div class="stat-card">
+<span>LOCAL TIME</span>
+<strong id="digitalTime">00:00:00</strong>
+</div>
 
-        <div class="search-results" id="searchResults"></div>
+<div class="stat-card">
+<span>DAY PERIOD</span>
+<strong id="dayPeriod">Morning</strong>
+</div>
 
-      </div>
+<div class="stat-card">
+<span>TIMEZONE</span>
+<strong id="timezoneName">Asia/Kathmandu</strong>
+</div>
+</div>
 
-    </header>
+</div>
 
-    <section class="map-wrapper">
+<div class="panel compare-panel">
 
-      <svg
-        viewBox="0 0 1600 800"
-        class="timezone-map"
-        id="map"
-        preserveAspectRatio="xMidYMid meet"
-      >
+<div class="compare-top">
+<div>
+<p class="label">Compare Time Between Cities</p>
+<h2>Time Difference</h2>
+</div>
+</div>
 
-        <rect class="ocean" x="0" y="0" width="1600" height="800"></rect>
+<div class="compare-controls">
 
-        <g id="tzBands">
-          <!-- 24 x 15° timezone bands injected by JS -->
-        </g>
+<select id="compareA"></select>
 
-        <image
-          class="continents"
-          href="world.svg"
-          x="0"
-          y="0"
-          width="1600"
-          height="800"
-          preserveAspectRatio="xMidYMid meet"
-        />
+<div class="compare-separator">↔</div>
 
-        <g id="graticule">
-          <!-- equator + prime meridian, built from the same
-               projection the city dots use, so it can never drift -->
-        </g>
+<select id="compareB"></select>
 
-        <rect class="map-frame" x="0" y="0" width="1600" height="800"></rect>
+</div>
 
-        <g id="cityLayer">
-          <!-- city markers injected by JS -->
-        </g>
+<div class="compare-result">
 
-      </svg>
+<div class="compare-box">
+<span>CITY A</span>
+<h3 id="compareATime">--:--</h3>
+<p id="compareAName">---</p>
+</div>
 
-      <div class="tooltip" id="tooltip"></div>
+<div class="difference-box">
+<span>DIFFERENCE</span>
+<h2 id="timeDifference">0h</h2>
+</div>
 
-    </section>
+<div class="compare-box">
+<span>CITY B</span>
+<h3 id="compareBTime">--:--</h3>
+<p id="compareBName">---</p>
+</div>
 
-    <footer class="dock">
+</div>
 
-      <div class="dock-block">
+<div class="city-list-wrap">
 
-        <span>
-          Selected City
-        </span>
+<div class="list-header">
+<p class="label">Global Cities</p>
+<p id="cityCount">0 Cities</p>
+</div>
 
-        <h2 id="cityName">
-          —
-        </h2>
+<div class="city-list" id="cityList"></div>
 
-      </div>
+</div>
 
-      <div class="dock-block">
+</div>
 
-        <span>
-          Local Time
-        </span>
+</section>
 
-        <h2 id="time">
-          --:--:--
-        </h2>
+</main>
 
-      </div>
-
-      <div class="dock-block">
-
-        <span>
-          UTC Offset
-        </span>
-
-        <h2 id="offset">
-          —
-        </h2>
-
-      </div>
-
-    </footer>
-
-  </main>
-
-  <script src="worldtime.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/min/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment-timezone@0.5.45/builds/moment-timezone-with-data-10-year-range.min.js"></script>
+<script src="worldtime.js"></script>
 </body>
 </html>
