@@ -23,6 +23,10 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
+::selection{
+  background:#000;
+  color:#fff;
+}
 .grid {
   position: fixed;
   inset: 0;
