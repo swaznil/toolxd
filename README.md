@@ -1,5 +1,8 @@
 # toolxd
 
+toolxd.vercel.app
+
+swaznil.github.io/toolxd
 ```
 toolxd
 ├── README.md
@@ -7,10 +10,12 @@ toolxd
 ├── assets
 ├── css
 │   ├── card.css
+│   ├── global.css
 │   └── style.css
 ├── index.html
 ├── js
-│   └── script.js
+│   ├── script.js
+│   └── theme.js
 └── tools
     ├── metadata
     │   ├── metadata.html

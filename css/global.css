@@ -30,6 +30,21 @@
     box-shadow 0.35s ease;
 }
 
+:root[data-theme="dark"] {
+  --bg: #10110f;
+  --card: rgba(30, 31, 28, 0.76);
+  --panel: rgba(30, 31, 28, 0.74);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --text: #f5f1e8;
+  --muted: #b7b2a8;
+  --muted-strong: #aaa397;
+  --accent: #8fb2ff;
+  --accent-soft: rgba(143, 178, 255, 0.16);
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+  --grid-line: rgba(255, 255, 255, 0.045);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -59,8 +74,8 @@ button {
 }
 
 ::selection {
-  background: #000;
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
 }
 
 .bg-grid,
@@ -82,8 +97,8 @@ button {
 .bg-grid,
 .grid {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(var(--grid-line, rgba(0, 0, 0, 0.03)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line, rgba(0, 0, 0, 0.03)) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -182,6 +197,145 @@ nav,
 .tab.active {
   background: #111;
   color: #fff;
+}
+
+.theme-toggle {
+  width: 52px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  backdrop-filter: blur(var(--blur));
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  transition: var(--transition);
+}
+
+.theme-toggle::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text);
+  transform: translateX(0);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+:root[data-theme="dark"] .theme-toggle::before {
+  transform: translateX(22px);
+}
+
+:root[data-theme="dark"] .noise {
+  opacity: 0.06;
+  filter: invert(1);
+}
+
+:root[data-theme="dark"] .gradient-1 {
+  background: #1d4ed8;
+}
+
+:root[data-theme="dark"] .gradient-2 {
+  background: #be185d;
+}
+
+:root[data-theme="dark"] .back,
+:root[data-theme="dark"] .nav-links a,
+:root[data-theme="dark"] .desc,
+:root[data-theme="dark"] .hero-text,
+:root[data-theme="dark"] .meta,
+:root[data-theme="dark"] .meta-row,
+:root[data-theme="dark"] .shortcuts,
+:root[data-theme="dark"] .hero-time p,
+:root[data-theme="dark"] .compare-box p,
+:root[data-theme="dark"] .city-card small,
+:root[data-theme="dark"] #cityCount,
+:root[data-theme="dark"] .raw-output,
+:root[data-theme="dark"] .meta-value {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .upload-zone,
+:root[data-theme="dark"] .sidebar-block,
+:root[data-theme="dark"] .metadata-panel,
+:root[data-theme="dark"] .raw-output,
+:root[data-theme="dark"] .meta-item,
+:root[data-theme="dark"] .search-wrap input,
+:root[data-theme="dark"] .search-results,
+:root[data-theme="dark"] .compare-controls select,
+:root[data-theme="dark"] .compare-box,
+:root[data-theme="dark"] .difference-box,
+:root[data-theme="dark"] .city-card,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .status,
+:root[data-theme="dark"] .status-pill,
+:root[data-theme="dark"] .secondary,
+:root[data-theme="dark"] kbd,
+:root[data-theme="dark"] .length-input,
+:root[data-theme="dark"] .timer-inputs input {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .primary,
+:root[data-theme="dark"] .generate,
+:root[data-theme="dark"] .copy-btn,
+:root[data-theme="dark"] .tab.active,
+:root[data-theme="dark"] .upload-mini {
+  background: #f5f1e8;
+  color: #111;
+}
+
+:root[data-theme="dark"] .timer-card,
+:root[data-theme="dark"] .right {
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="dark"] .password-dots span,
+:root[data-theme="dark"] .timer-hand,
+:root[data-theme="dark"] .speech-preview span,
+:root[data-theme="dark"] .hour,
+:root[data-theme="dark"] .minute,
+:root[data-theme="dark"] .center-dot,
+:root[data-theme="dark"] .slider::-webkit-slider-thumb {
+  background: var(--text);
+}
+
+:root[data-theme="dark"] .password-line,
+:root[data-theme="dark"] .timer-circle,
+:root[data-theme="dark"] .ring,
+:root[data-theme="dark"] .ring::before,
+:root[data-theme="dark"] .window-lines div,
+:root[data-theme="dark"] .stat-card,
+:root[data-theme="dark"] .option,
+:root[data-theme="dark"] .lap {
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .password-line,
+:root[data-theme="dark"] .window-lines div,
+:root[data-theme="dark"] .city-card:hover,
+:root[data-theme="dark"] .search-item:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+:root[data-theme="dark"] .fake-window,
+:root[data-theme="dark"] .clock,
+:root[data-theme="dark"] .display-wrap,
+:root[data-theme="dark"] .clock-face,
+:root[data-theme="dark"] .upload-icon,
+:root[data-theme="dark"] .live-badge {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .world-icon,
+:root[data-theme="dark"] .clock {
+  border-color: rgba(245, 241, 232, 0.65);
 }
 
 @media (max-width: 980px) {
