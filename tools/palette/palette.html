@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Studio • ToolXD</title>
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="palette.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="gradient gradient-1"></div>
+    <div class="gradient gradient-2"></div>
+    <div class="noise"></div>
+    <header class="topbar">
+      <div class="logo">ToolXD</div>
+      <a href="../../index.html" class="back"> ← Back </a>
+    </header>
+    <main class="wrapper">
+      <section class="hero">
+        <span class="eyebrow">Design Utility</span>
+        <h1> Color <br> Studio </h1>
+        <p> Generate modern palettes, extract shades, browse trending colors, and build aesthetic combinations instantly. </p>
+        <div class="controls">
+          <input type="color" id="colorPicker" value="#6366F1">
+          <input type="text" id="hexInput" value="#6366F1" spellcheck="false">
+          <button id="generateBtn"> Generate </button>
+        </div>
+        <div class="preset-row">
+          <button class="preset" data-color="#6366F1"></button>
+          <button class="preset" data-color="#EC4899"></button>
+          <button class="preset" data-color="#14B8A6"></button>
+          <button class="preset" data-color="#F97316"></button>
+          <button class="preset" data-color="#8B5CF6"></button>
+          <button class="preset" data-color="#22C55E"></button>
+        </div>
+      </section>
+      <section class="studio panel">
+        <div class="palette-grid" id="paletteGrid"></div>
+        <div class="bottom-grid">
+          <div class="info-card">
+            <span class="label">Color Information</span>
+            <div class="info-list">
+              <div>
+                <span>HEX</span>
+                <strong id="hexValue">#6366F1</strong>
+              </div>
+              <div>
+                <span>RGB</span>
+                <strong id="rgbValue"></strong>
+              </div>
+              <div>
+                <span>HSL</span>
+                <strong id="hslValue"></strong>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <span class="label">Palette Style</span>
+            <div class="style-grid">
+              <button class="style-btn active" data-style="modern"> Modern </button>
+              <button class="style-btn" data-style="pastel"> Pastel </button>
+              <button class="style-btn" data-style="dark"> Dark </button>
+              <button class="style-btn" data-style="vibrant"> Vibrant </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+<script src="palette.js"></script>
+</body>
+</html>
