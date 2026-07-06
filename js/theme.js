@@ -1,1 +1,0 @@
-console.log("Dark mode is removed for now")
