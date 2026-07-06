@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolXD • Text To Speech</title>
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="tts.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+</head>
+  <body>
+    <main class="page">
+      <nav>
+        <div class="logo">ToolXD</div>
+        <a href="../../index.html" class="back"> ← Back </a>
+      </nav>
+      <section class="layout">
+        <div class="editorial-left">
+          <div class="eyebrow"> Audio Utility /// Neural Voice </div>
+          <h1> Let your <br> words <br> speak. </h1>
+          <p class="hero-text"> A cinematic text-to-speech experience with live voice controls, playback shortcuts, and immersive motion. </p>
+          <div class="meta-row">
+            <span>Natural Voices</span>
+            <span class="dot"></span>
+            <span>Playback Control</span>
+            <span class="dot"></span>
+            <span>Keyboard Ready</span>
+          </div>
+        </div>
+        <div class="speech-card">
+          <div class="card-glow"></div>
+          <div class="card-top">
+            <div>
+              <div class="tiny-label"> ACTIVE VOICE </div>
+              <select id="voiceSelect"></select>
+            </div>
+            <div class="status-pill" id="status"> Idle </div>
+          </div>
+          <div class="wave-stage">
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            <div class="orb">
+              <div class="orb-inner"></div>
+            </div>
+          </div>
+          <div class="editor">
+            <textarea id="textInput" placeholder="Type something beautiful..."></textarea>
+          </div>
+          <div class="controls-grid">
+            <div class="slider-card">
+              <div class="slider-top">
+                <span>Speed</span>
+                <strong id="speedValue">1.0x</strong>
+              </div>
+              <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
+            </div>
+            <div class="slider-card">
+              <div class="slider-top">
+                <span>Pitch</span>
+                <strong id="pitchValue">1.0</strong>
+              </div>
+              <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
+            </div>
+          </div>
+          <div class="actions">
+            <button id="speakBtn" class="btn primary"> Speak </button>
+            <button id="pauseBtn" class="btn secondary"> Pause </button>
+            <button id="stopBtn" class="btn secondary"> Stop </button>
+          </div>
+          <div class="shortcuts">
+            <span>
+              <kbd>Space</kbd> Speak / Pause </span>
+            <span>
+              <kbd>S</kbd> Stop </span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+<script src="tts.js"></script>
+</body>
+</html>
