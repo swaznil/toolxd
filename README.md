@@ -22,6 +22,10 @@ toolxd
 │   ├── script.js
 │   └── theme.js
 └── tools
+    ├── hashgen
+    │   ├── hasgen.html
+    │   ├── hashgen.css
+    │   └── hashgen.js
     ├── metadata
     │   ├── metadata.html
     │   ├── metadata.js

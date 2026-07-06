@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hash Generator • ToolXD</title>
+
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="hashgen.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+    <div class="gradient gradient-1"></div>
+    <div class="gradient gradient-2"></div>
+    <div class="noise"></div>
+    <header class="topbar">
+      <div class="logo">ToolXD</div>
+      <a href="../../index.html" class="back"> ← Back </a>
+    </header>
+    <main class="container">
+      <section class="hero">
+        <span class="eyebrow">Security Tool</span>
+        <h1> Generate <br> Hashes </h1>
+        <p> Fast & Clean </p>
+      </section>
+      <section class="workspace panel">
+        <div class="toolbar">
+          <div class="select-box">
+            <span class="label">Algorithm</span>
+            <select id="algorithm">
+              <option value="SHA-1">SHA-1</option>
+              <option value="SHA-256" selected>SHA-256</option>
+              <option value="SHA-384">SHA-384</option>
+              <option value="SHA-512">SHA-512</option>
+            </select>
+          </div>
+          <button class="generate" id="generateBtn"> Generate </button>
+        </div>
+        <div class="editor">
+          <textarea id="text" placeholder="Paste or type your text here..."></textarea>
+        </div>
+        <div class="result">
+          <div class="result-top">
+            <span class="label">Generated Hash</span>
+            <button id="copyBtn" class="copy-btn"> Copy </button>
+          </div>
+          <div class="hash-output" id="hashOutput"> Your generated hash will appear here </div>
+        </div>
+      </section>
+    </main>
+
+<script src="hashgen.js"></script>
+</body>
+</html>
