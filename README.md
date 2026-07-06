@@ -103,12 +103,21 @@ toolxd
         ├── worldtime.html
         └── worldtime.js
 ```
+
+---
+
+## How It Works
+
+ToolxD is built entirely using vanilla HTML, CSS, and JavaScript. There is no backend. Each tool exists as an independent module with its own HTML, CSS, and JavaScript files.
+
+Almost all tools run inside the browser using Browser APIs and LocalStorage. So these tool work offline after loading. Some tools such as text to Speech, rely on browser provided APIs like the Web Speech API and may require an internet connection depending on browser support. The project also uses reusable global CSS components across all tools.
+
 ---
 
 ## AI Usage
 
-ChatGPT was used for: 
+ChatGPT and Codex were used for: 
 
-I used it occasionally to help me with creating initial structure and helping me understand JavaScript logic. I also used it to find performance improvements and helping create global css. All features, design decisios and final integration were implemented by me.
+I used ChatGPT occasionally to help me with creating initial structure and helping me understand JavaScript logic. I used codex once to find performance improvements and help create global css. All features, design decisios and final integration were implemented by me.
 
 ---
