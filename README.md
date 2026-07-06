@@ -34,6 +34,10 @@ toolxd
     │   ├── passwordgen.css
     │   ├── passwordgen.html
     │   └── passwordgen.js
+    ├── textstat
+    │   ├── textstats.css
+    │   ├── textstats.html
+    │   └── textstats.js
     ├── timer
     │   ├── timer.css
     │   ├── timer.html
