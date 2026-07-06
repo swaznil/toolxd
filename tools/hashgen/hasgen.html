@@ -22,30 +22,33 @@
       <div class="logo">ToolXD</div>
       <a href="../../index.html" class="back"> ← Back </a>
     </header>
-    <main class="container">
+    <main class="wrapper">
       <section class="hero">
         <span class="eyebrow">Security Tool</span>
         <h1> Generate <br> Hashes </h1>
-        <p> Fast & Clean </p>
+        <p> Generate SHA hashes instantly from text or uploaded files. </p>
       </section>
       <section class="workspace panel">
         <div class="toolbar">
-          <div class="select-box">
-            <span class="label">Algorithm</span>
-            <select id="algorithm">
-              <option value="SHA-1">SHA-1</option>
-              <option value="SHA-256" selected>SHA-256</option>
-              <option value="SHA-384">SHA-384</option>
-              <option value="SHA-512">SHA-512</option>
-            </select>
-          </div>
-          <button class="generate" id="generateBtn"> Generate </button>
+          <select id="algorithm">
+            <option value="SHA-1">SHA-1</option>
+            <option value="SHA-256" selected>SHA-256</option>
+            <option value="SHA-384">SHA-384</option>
+            <option value="SHA-512">SHA-512</option>
+          </select>
+          <button id="generateBtn" class="generate"> Generate </button>
         </div>
         <div class="editor">
           <textarea id="text" placeholder="Paste or type your text here..."></textarea>
+          <div class="upload-row">
+            <label class="upload-btn"> Upload File <input type="file" id="fileInput" hidden>
+            </label>
+            <div class="file-info" id="fileInfo"> No file selected </div>
+            <button class="remove-file" id="removeFile"> Remove </button>
+          </div>
         </div>
-        <div class="result">
-          <div class="result-top">
+        <div class="output">
+          <div class="output-top">
             <span class="label">Generated Hash</span>
             <button id="copyBtn" class="copy-btn"> Copy </button>
           </div>

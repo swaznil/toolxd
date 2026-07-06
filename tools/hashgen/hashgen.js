@@ -1,34 +1,71 @@
 const text = document.getElementById("text");
 const algorithm = document.getElementById("algorithm");
 const generateBtn = document.getElementById("generateBtn");
+const fileInput = document.getElementById("fileInput");
+const fileInfo = document.getElementById("fileInfo");
+const removeFile = document.getElementById("removeFile");
 const hashOutput = document.getElementById("hashOutput");
 const copyBtn = document.getElementById("copyBtn");
 
-async function generateHash() {
-  const value = text.value.trim();
+let selectedFile = null;
 
-  if (!value) {
-    hashOutput.textContent = "Please enter some text";
+fileInput.addEventListener("change", () => {
+  selectedFile = fileInput.files[0];
+
+  if (!selectedFile) {
+    fileInfo.textContent = "No file selected";
     return;
   }
 
-  const encoder = new TextEncoder();
-  const data = encoder.encode(value);
-  const buffer = await crypto.subtle.digest(algorithm.value, data);
-  const hashArray = Array.from(new Uint8Array(buffer));
-  const hashHex = hashArray
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+  fileInfo.textContent = selectedFile.name;
+});
 
-  hashOutput.textContent = hashHex;
-}
+removeFile.addEventListener("click", () => {
+  selectedFile = null;
 
-async function copyHash() {
+  fileInput.value = "";
+
+  fileInfo.textContent = "No file selected";
+});
+
+generateBtn.addEventListener("click", async () => {
+  try {
+    hashOutput.textContent = "Generating hash...";
+
+    let buffer;
+
+    if (selectedFile) {
+      buffer = await selectedFile.arrayBuffer();
+    } else {
+      const value = text.value.trim();
+
+      if (!value) {
+        hashOutput.textContent = "Enter text or upload a file";
+        return;
+      }
+
+      buffer = new TextEncoder().encode(value);
+    }
+
+    const hashBuffer = await crypto.subtle.digest(algorithm.value, buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hash = hashArray
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+
+    hashOutput.textContent = hash;
+  } catch {
+    hashOutput.textContent = "Failed to generate hash";
+  }
+})
+
+copyBtn.addEventListener("click", async () => {
   const value = hashOutput.textContent;
 
   if (
-    value === "Your hash will appear here" ||
-    value === "Please enter some text"
+    value === "Your generated hash will appear here" ||
+    value === "Generating hash..." ||
+    value === "Enter text or upload a file"
   ) {
     return;
   }
@@ -42,13 +79,4 @@ async function copyHash() {
     copyBtn.textContent = "Copy";
     copyBtn.classList.remove("copied");
   }, 1600);
-}
-
-generateBtn.addEventListener("click", generateHash);
-copyBtn.addEventListener("click", copyHash);
-
-text.addEventListener("keydown", (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-    generateHash();
-  }
 });
