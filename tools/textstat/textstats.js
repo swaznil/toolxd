@@ -1,5 +1,4 @@
 const textInput = document.getElementById("textInput");
-
 const wordCount = document.getElementById("wordCount");
 const charCount = document.getElementById("charCount");
 const sentenceCount = document.getElementById("sentenceCount");
@@ -9,7 +8,6 @@ const charNoSpace = document.getElementById("charNoSpace");
 
 function updateStats() {
   const text = textInput.value;
-
   const words = text
     .trim()
     .split(/\s+/)
@@ -26,8 +24,9 @@ function updateStats() {
   const paragraphs = text
     .split(/\n+/)
     .filter((paragraph) => paragraph.trim().length > 0);
-
+    
   const readMinutes = Math.max(1, Math.ceil(wordTotal / 200));
+
   wordCount.textContent = wordTotal;
   charCount.textContent = charTotal;
   sentenceCount.textContent = sentences.length;

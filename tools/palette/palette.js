@@ -27,7 +27,7 @@ styleButtons.forEach((button) => {
     styleButtons.forEach((btn) => btn.classList.remove("active"));
 
     button.classList.add("active");
-
+    
     currentStyle = button.dataset.style;
 
     generatePalette();
@@ -54,9 +54,7 @@ generateBtn.addEventListener("click", generatePalette);
 
 function hexToRgb(hex) {
   const r = parseInt(hex.slice(1, 3), 16);
-
   const g = parseInt(hex.slice(3, 5), 16);
-
   const b = parseInt(hex.slice(5, 7), 16);
 
   return { r, g, b };
@@ -96,11 +94,9 @@ function rgbToHsl(r, g, b) {
       case r:
         h = (g - b) / d + (g < b ? 6 : 0);
         break;
-
       case g:
         h = (b - r) / d + 2;
         break;
-
       case b:
         h = (r - g) / d + 4;
         break;
@@ -121,9 +117,7 @@ function hslToRgb(h, s, l) {
   l /= 100;
 
   const c = (1 - Math.abs(2 * l - 1)) * s;
-
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-
   const m = l - c / 2;
 
   let r = 0;
@@ -210,7 +204,6 @@ function buildPalette(base) {
     if (hue > 360) {
       hue -= 360;
     }
-
     if (hue < 0) {
       hue += 360;
     }
@@ -223,11 +216,9 @@ function buildPalette(base) {
 
 function generatePalette() {
   const base = colorPicker.value;
-
   const palette = buildPalette(base);
 
   paletteGrid.innerHTML = "";
-
   palette.forEach((color) => {
     const card = document.createElement("div");
 
@@ -254,25 +245,21 @@ function generatePalette() {
       const original = color;
 
       button.textContent = "Copied";
-
       button.classList.add("copied");
 
       setTimeout(() => {
         button.textContent = original;
-
         button.classList.remove("copied");
       }, 1400);
     });
   });
 
   const rgb = hexToRgb(base);
-
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
   hexValue.textContent = base;
 
   rgbValue.textContent = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-
   hslValue.textContent = `${hsl.h}°, ${hsl.s}%, ${hsl.l}%`;
 }
 

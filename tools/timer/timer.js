@@ -12,15 +12,12 @@ const hours = document.getElementById("hours");
 const minutes = document.getElementById("minutes");
 const seconds = document.getElementById("seconds");
 
-
 let mode = "stopwatch";
 let running = false;
 let elapsed = 0;
 let interval;
 let startTime = 0;
 let timerDuration = 0;
-
-/* FORMAT */
 
 function formatTime(ms) {
   const totalSeconds = Math.floor(ms / 1000);
@@ -39,15 +36,12 @@ function formatMs(ms) {
   return String(ms % 1000).padStart(3, "0");
 }
 
-/* BUBBLE ORBIT */
-
 function moveBubble(ms) {
   const radius = window.innerWidth <= 980 ? 130 : 160;
 
   let angle;
 
   if (mode === "timer") {
-
     angle = -(ms / 1000) * 2;
   } else {
     angle = (ms / 1000) * 2;
@@ -58,8 +52,6 @@ function moveBubble(ms) {
 
   bubble.style.transform = `translate(${x}px, ${y}px)`;
 }
-
-/* SOUND */
 
 function playAlarm() {
   const audio = new Audio(
@@ -228,7 +220,6 @@ tabs.forEach((tab) => {
 });
 
 document.addEventListener("keydown", (e) => {
-
   const tag = document.activeElement.tagName;
 
   if (tag === "INPUT" || tag === "TEXTAREA") return;

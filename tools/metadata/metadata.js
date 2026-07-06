@@ -14,7 +14,6 @@ function add(data, key, value) {
     value === "Empty"
   )
     return;
-
   data[key] = value;
 }
 
@@ -47,7 +46,6 @@ function entropy(buffer) {
     if (!f) continue;
 
     const p = f / bytes.length;
-
     e -= p * Math.log2(p);
   }
 
@@ -76,11 +74,9 @@ async function getImageData(file) {
     img.onload = () => {
       resolve({
         Width: img.width,
-
         Height: img.height,
 
         AspectRatio: (img.width / img.height).toFixed(5),
-
         TotalPixels: (img.width * img.height).toLocaleString(),
       });
     };

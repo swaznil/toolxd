@@ -15,139 +15,76 @@
       <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-      <main class="page">
-         <nav>
-            <div class="logo"> ToolXD </div>
-            <a href="../../index.html" class="back">
-            ← Back
-            </a> 
-         </nav>
-         
-      <section class="layout">
+
+  <main class="page">
+
+    <nav>
+      <div class="logo"> ToolXD </div>
+      <a href="../../index.html" class="back">← Back</a>
+    </nav>
+
+    <section class="layout">
 
       <div class="editorial-left">
-
-         <div class="eyebrow">
-            Precision Utility /// Minimal Motion
-         </div>
-
-         <h1>
-            Time,<br>
-            beautifully<br>
-            measured.
-         </h1>
-
-         <p class="hero-text">
-            An stopwatch and a timer experience  Designed 
-            to feel cinematic, lightweight and elegent.
-            No ads, No bs.
-         </p>
-
-         <div class="meta-row">
-            <span>Stopwatch</span>
-            <span class="dot"></span>
-            <span>Timer</span>
-            <span class="dot"></span>
-            <span>Keyboard Ready</span>
-         </div>
-
+        <div class="eyebrow"> Precision Utility /// Minimal Motion </div>
+        <h1> Time, <br> beautifully <br> measured. </h1>
+        <p class="hero-text"> An stopwatch and a timer experience Designed to feel cinematic, lightweight and elegent. No ads, No bs. </p>
+        <div class="meta-row">
+          <span>Stopwatch</span>
+          <span class="dot"></span>
+          <span>Timer</span>
+          <span class="dot"></span>
+          <span>Keyboard Ready</span>
+        </div>
       </div>
 
       <div class="timer-card">
 
-         <div class="card-top">
+        <div class="card-top">
+          <div class="tabs">
+            <button class="tab active" data-mode="stopwatch"> Stopwatch </button>
+            <button class="tab" data-mode="timer"> Timer </button>
+          </div>
+          <div class="status-pill"> Live </div>
+        </div>
 
-            <div class="tabs">
-            <button class="tab active" data-mode="stopwatch">
-               Stopwatch
-            </button>
+        <div class="timer-stage">
+          <div class="ring"></div>
+          <div class="bubble" id="bubble"></div>
+          <div class="display-wrap">
+            <div class="tiny-label"> CURRENT SESSION </div>
+            <div class="time" id="display"> 00:00:00 </div>
+            <div class="ms" id="subDisplay"> 000 </div>
+          </div>
+        </div>
 
-            <button class="tab" data-mode="timer">
-               Timer
-            </button>
-            </div>
+        <div class="timer-inputs" id="timerInputs">
+          <input type="number" id="hours" min="0" value="0">
+          <input type="number" id="minutes" min="0" value="5">
+          <input type="number" id="seconds" min="0" value="0">
+        </div>
 
-            <div class="status-pill">
-            Live
-            </div>
+        <div class="controls">
+          <button class="btn primary" id="startBtn"> Start </button>
+          <button class="btn secondary" id="lapBtn"> Lap </button>
+          <button class="btn secondary" id="resetBtn"> Reset </button>
+        </div>
 
-         </div>
+        <div class="laps" id="laps"></div>
 
-         <div class="timer-stage">
-
-            <div class="ring"></div>
-
-            <div class="bubble" id="bubble"></div>
-
-            <div class="display-wrap">
-
-            <div class="tiny-label">
-               CURRENT SESSION
-            </div>
-
-            <div class="time" id="display">
-               00:00:00
-            </div>
-
-            <div class="ms" id="subDisplay">
-               000
-            </div>
-
-            </div>
-
-         </div>
-
-         <div class="timer-inputs" id="timerInputs">
-
-            <input type="number" id="hours" min="0" value="0">
-
-            <input type="number" id="minutes" min="0" value="5">
-
-            <input type="number" id="seconds" min="0" value="0">
-
-         </div>
-
-         <div class="controls">
-
-            <button class="btn primary" id="startBtn">
-            Start
-            </button>
-
-            <button class="btn secondary" id="lapBtn">
-            Lap
-            </button>
-
-            <button class="btn secondary" id="resetBtn">
-            Reset
-            </button>
-
-         </div>
-
-         <div class="laps" id="laps"></div>
-
-         <div class="shortcuts">
-
-            <span>
-            <kbd>Space</kbd>
-            Start / Pause
-            </span>
-
-            <span id="lapShortcut">
-            <kbd>L</kbd>
-            Lap
-            </span>
-
-            <span>
-            <kbd>R</kbd>
-            Reset
-            </span>
-
-         </div>
+        <div class="shortcuts">
+          <span>
+            <kbd>Space</kbd> Start / Pause </span>
+          <span id="lapShortcut">
+            <kbd>L</kbd> Lap </span>
+          <span>
+            <kbd>R</kbd> Reset </span>
+        </div>
 
       </div>
+    </section>
+  </main>
 
-      </section>
-      </main>
-      <script src="timer.js"></script>
+<script src="timer.js"></script>
 </body>
 </html>

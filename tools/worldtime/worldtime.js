@@ -13,18 +13,14 @@ const secondHand = document.getElementById("secondHand");
 
 const compareA = document.getElementById("compareA");
 const compareB = document.getElementById("compareB");
-
 const compareATime = document.getElementById("compareATime");
 const compareBTime = document.getElementById("compareBTime");
-
 const compareAName = document.getElementById("compareAName");
 const compareBName = document.getElementById("compareBName");
 
 const timeDifference = document.getElementById("timeDifference");
-
 const searchInput = document.getElementById("searchInput");
 const searchResults = document.getElementById("searchResults");
-
 const cityCount = document.getElementById("cityCount");
 
 const cities = [
@@ -77,11 +73,9 @@ buildTicks();
 function formatTime(tz) {
   return moment().tz(tz).format("HH:mm:ss");
 }
-
 function formatDate(tz) {
   return moment().tz(tz).format("dddd, MMMM D");
 }
-
 function getOffset(tz) {
   return moment.tz(tz).format("Z");
 }
@@ -184,13 +178,11 @@ function updateComparison() {
 
   const cityA = cities.find((c) => c.tz === tzA);
   const cityB = cities.find((c) => c.tz === tzB);
-
   const timeA = moment().tz(tzA);
   const timeB = moment().tz(tzB);
 
   compareATime.textContent = timeA.format("HH:mm");
   compareBTime.textContent = timeB.format("HH:mm");
-
   compareAName.textContent = cityA.city;
   compareBName.textContent = cityB.city;
 
@@ -282,13 +274,9 @@ function autoDetect() {
 }
 
 autoDetect();
-
 populateCompare();
-
 renderCities(cities);
-
 updateClock();
-
 updateComparison();
 
 setInterval(() => {

@@ -14,14 +14,12 @@ let voices = [];
 
 function loadVoices() {
   voices = speechSynthesis.getVoices();
-
   voiceSelect.innerHTML = "";
 
   voices.forEach((voice, index) => {
     const option = document.createElement("option");
 
     option.value = index;
-
     option.textContent = `${voice.name} • ${voice.lang}`;
 
     voiceSelect.appendChild(option);
@@ -48,11 +46,8 @@ function speak() {
   speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-
   utterance.voice = voices[voiceSelect.value];
-
   utterance.rate = Number(speed.value);
-
   utterance.pitch = Number(pitch.value);
 
   utterance.onstart = () => {

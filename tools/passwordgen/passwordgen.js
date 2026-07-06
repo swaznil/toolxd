@@ -8,8 +8,6 @@ const lowercase = document.getElementById("lowercase");
 const numbers = document.getElementById("numbers");
 const symbols = document.getElementById("symbols");
 
-/* SLIDER */
-
 function updateSlider() {
   const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
 

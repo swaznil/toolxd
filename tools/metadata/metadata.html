@@ -12,7 +12,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
 </head>
 
 <body>
@@ -22,63 +21,66 @@
   <div class="gradient gradient-2"></div>
 
   <main class="page">
-        <nav>
-    <a href="../../index.html" class="back">
-      ← Back
-    </a>
-  </nav>
-      <section class="hero">
-        <div class="hero-top">
-          <div class="hero-copy">
-            <div class="eyebrow"> File Intelligence /// Clean Extraction </div>
-            <h1> Metadata, <br> beautifully <br> organized. </h1>
-          </div>
-          <div class="upload-card">
-            <label class="upload-zone">
-              <input type="file" id="fileInput">
-              <div class="upload-top">
-                <div class="upload-mini"> Drop File </div>
-              </div>
-              <div class="upload-center">
-                <div class="upload-icon"> ↑ </div>
-              </div>
-              <div class="upload-bottom">
-                <div class="upload-title"> Upload any file </div>
-              </div>
-            </label>
-          </div>
+
+    <nav>
+      <a href="../../index.html" class="back">← Back</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-top">
+        <div class="hero-copy">
+          <div class="eyebrow"> File Intelligence /// Clean Extraction </div>
+          <h1> Metadata, <br> beautifully <br> organized. </h1>
         </div>
-        <div class="viewer-layout">
-          <aside class="sidebar">
-            <div class="sidebar-block">
-              <span class="label"> File Name </span>
-              <h3 id="fileName"> — </h3>
+
+        <div class="upload-card">
+          <label class="upload-zone">
+            <input type="file" id="fileInput">
+            <div class="upload-top">
+              <div class="upload-mini"> Drop File </div>
             </div>
-            <div class="sidebar-block">
-              <span class="label"> Type </span>
-              <h3 id="fileType"> — </h3>
+            <div class="upload-center">
+              <div class="upload-icon"> ↑ </div>
             </div>
-            <div class="sidebar-block">
-              <span class="label"> Size </span>
-              <h3 id="fileSize"> — </h3>
+            <div class="upload-bottom">
+              <div class="upload-title"> Upload any file </div>
             </div>
-            <div class="sidebar-block">
-              <span class="label"> Modified </span>
-              <h3 id="fileModified"> — </h3>
-            </div>
-          </aside>
-          <section class="metadata-panel">
-            <div class="panel-top">
-              <div>
-                <div class="eyebrow small"> Deep Metadata Inspection </div>
-                <h2> Raw Extraction Output </h2>
-              </div>
-              <div class="status"> Live Parse </div>
-            </div>
-            <pre class="raw-output" id="metadataOutput">Awaiting file upload...</pre>
-          </section>
+          </label>
         </div>
-      </section>
+      </div>
+
+      <div class="viewer-layout">
+        <aside class="sidebar">
+          <div class="sidebar-block">
+            <span class="label"> File Name </span>
+            <h3 id="fileName"> — </h3>
+          </div>
+          <div class="sidebar-block">
+            <span class="label"> Type </span>
+            <h3 id="fileType"> — </h3>
+          </div>
+          <div class="sidebar-block">
+            <span class="label"> Size </span>
+            <h3 id="fileSize"> — </h3>
+          </div>
+          <div class="sidebar-block">
+            <span class="label"> Modified </span>
+            <h3 id="fileModified"> — </h3>
+          </div>
+        </aside>
+        <section class="metadata-panel">
+          <div class="panel-top">
+            <div>
+              <div class="eyebrow small"> Deep Metadata Inspection </div>
+              <h2> Raw Extraction Output </h2>
+            </div>
+            <div class="status"> Live Parse </div>
+          </div>
+          <pre class="raw-output" id="metadataOutput">Awaiting file upload...</pre>
+        </section>
+      </div>
+
+    </section>
   </main>
 
 <script src="metadata.js"></script>

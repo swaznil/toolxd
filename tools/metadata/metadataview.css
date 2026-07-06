@@ -38,9 +38,7 @@ h1 {
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   overflow: hidden;
-  transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
+  transition: transform 0.25s ease, border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 .upload-zone:hover {
@@ -123,9 +121,7 @@ h1 {
   background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--border);
   backdrop-filter: blur(10px);
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 .sidebar-block:hover {
   transform: translateY(-2px);
@@ -247,6 +243,7 @@ h2 {
 .upload-zone.dragging::before {
   border-color: rgba(0, 0, 0, 0.18);
 }
+
 @media (max-width: 980px) {
   .hero-top {
     grid-template-columns: 1fr;

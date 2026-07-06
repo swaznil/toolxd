@@ -57,7 +57,7 @@ generateBtn.addEventListener("click", async () => {
   } catch {
     hashOutput.textContent = "Failed to generate hash";
   }
-})
+});
 
 copyBtn.addEventListener("click", async () => {
   const value = hashOutput.textContent;
