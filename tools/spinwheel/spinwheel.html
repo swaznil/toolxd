@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolXD • Spin Wheel</title>
 
     <link rel="stylesheet" href="../../css/global.css">
@@ -11,11 +10,66 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="bg-grid"></div>
+    <div class="gradient gradient-1"></div>
+    <div class="gradient gradient-2"></div>
+    <div class="noise"></div>
 
+    <main class="page">
+
+      <nav>
+        <div class="logo">ToolXD</div>
+        <a href="../../index.html" class="back">← Back</a>
+      </nav>
+
+      <section class="layout">
+        <div class="left">
+
+          <div class="eyebrow">Browser Native Utility | Random Decisions</div>
+          <h1>Spin <br>the Wheel. </h1>
+          <p class="desc"> Add your own choices and let the wheel decide. </p>
+
+          <div class="meta">
+            <div class="meta-item">
+              <span class="meta-label">Choices</span>
+              <strong id="choiceCount">0</strong>
+            </div>
+
+            <div class="meta-item">
+              <span class="meta-label">Result</span>
+              <strong id="winnerText">Add choices to begin</strong>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="wheel-frame">
+            <div class="wheel-pointer"></div>
+            <canvas id="wheel"></canvas>
+          </div>
+
+          <div class="controls">
+            <div class="add-row">
+              <input id="choiceInput" class="choice-input-main" type="text" placeholder="Add a choice..." maxlength="40" />
+              <button id="addChoiceBtn" class="small-btn" type="button">Add</button>
+            </div>
+
+            <div class="action-row">
+              <button id="spinBtn" class="generate" type="button">Spin Wheel</button>
+              <button id="clearBtn" class="ghost-btn" type="button">Clear</button>
+            </div>
+
+            <div id="choicesList" class="choices-list"></div>
+          </div>
+        </div>
+
+      </section>
+    </main>
 <script src="spinwheel.js"></script>
 </body>
 </html>
