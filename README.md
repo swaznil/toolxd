@@ -86,6 +86,10 @@ toolxd
     │   ├── passwordgen.css
     │   ├── passwordgen.html
     │   └── passwordgen.js
+    ├── spinwheel
+    │   ├── spinwheel.css
+    │   ├── spinwheel.html
+    │   └── spinwheel.js
     ├── textstat
     │   ├── textstats.css
     │   ├── textstats.html
