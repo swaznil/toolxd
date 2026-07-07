@@ -66,6 +66,49 @@ function generatePassword() {
   }
 
   password.textContent = result;
+  calculateStrength(result);
+}
+
+function calculateStrength(passwordValue) {
+  let charsetSize = 0;
+
+  if (/[A-Z]/.test(passwordValue)) charsetSize += 26;
+  if (/[a-z]/.test(passwordValue)) charsetSize += 26;
+  if (/[0-9]/.test(passwordValue)) charsetSize += 10;
+  if (/[^A-Za-z0-9]/.test(passwordValue)) charsetSize += 32;
+
+  const entropy = passwordValue.length * Math.log2(charsetSize || 1);
+
+  const strengthFill = document.getElementById("strengthFill");
+  const strengthText = document.getElementById("strengthText");
+  const crackTime = document.getElementById("crackTime");
+
+  let label = "";
+  let width = 0;
+  let estimate = "";
+
+  if (entropy < 40) {
+    label = "Weak";
+    width = 25;
+    estimate = "a few seconds";
+  } else if (entropy < 60) {
+    label = "Moderate";
+    width = 50;
+    estimate = "a few hours";
+  } else if (entropy < 80) {
+    label = "Strong";
+    width = 75;
+    estimate = "thousands of years";
+  } else {
+    label = "Very Strong";
+    width = 100;
+    estimate = "millions of years";
+  }
+
+  strengthText.textContent = label;
+  strengthFill.style.width = width + "%";
+
+  crackTime.textContent = `Estimated crack time: ${estimate}`;
 }
 
 generateBtn.addEventListener("click", generatePassword);
@@ -82,3 +125,4 @@ copyBtn.addEventListener("click", async () => {
 
 updateSlider();
 generatePassword();
+calculateStrength(password.textContent);
