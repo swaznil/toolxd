@@ -157,6 +157,12 @@ body {
   gap: 1.5rem;
   position: sticky;
   top: 2rem;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92),
+      #dcdc2d
+    );
 }
 .clock-header {
   display: flex;
@@ -177,7 +183,6 @@ body {
   padding: 0.78rem 1rem;
   border-radius: 16px;
   background: var(--accent-soft);
-  color: var(--accent);
   font-size: 0.82rem;
   font-family: "IBM Plex Mono", monospace;
   white-space: nowrap;

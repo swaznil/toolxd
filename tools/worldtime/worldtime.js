@@ -27,11 +27,11 @@ const cities = [
   { city: "Kathmandu", country: "Nepal", tz: "Asia/Kathmandu" },
   { city: "Tokyo", country: "Japan", tz: "Asia/Tokyo" },
   { city: "London", country: "United Kingdom", tz: "Europe/London" },
-  { city: "New York", country: "United States", tz: "America/New_York" },
-  { city: "Los Angeles", country: "United States", tz: "America/Los_Angeles" },
+  { city: "New York", country: "USA", tz: "America/New_York" },
+  { city: "Los Angeles", country: "USA", tz: "America/Los_Angeles" },
   { city: "Paris", country: "France", tz: "Europe/Paris" },
   { city: "Sydney", country: "Australia", tz: "Australia/Sydney" },
-  { city: "Dubai", country: "United Arab Emirates", tz: "Asia/Dubai" },
+  { city: "Dubai", country: "UAE", tz: "Asia/Dubai" },
   { city: "Singapore", country: "Singapore", tz: "Asia/Singapore" },
   { city: "Bangkok", country: "Thailand", tz: "Asia/Bangkok" },
   { city: "Berlin", country: "Germany", tz: "Europe/Berlin" },
@@ -43,10 +43,80 @@ const cities = [
   { city: "Mumbai", country: "India", tz: "Asia/Kolkata" },
   { city: "Moscow", country: "Russia", tz: "Europe/Moscow" },
   { city: "Rome", country: "Italy", tz: "Europe/Rome" },
-  { city: "Hong Kong", country: "China", tz: "Asia/Hong_Kong" },
+  { city: "Hong Kong", country: "China", tz: "Asia/Hong_Kong" }
 ];
 
 let activeCity = cities[0];
+
+function getParts(timezone) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: timezone,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    hour12: false
+  }).formatToParts(new Date());
+
+  const map = {};
+
+  parts.forEach((part) => {
+    map[part.type] = part.value;
+  });
+
+  return map;
+}
+
+function formatTime(tz) {
+  const p = getParts(tz);
+
+  return `${p.hour}:${p.minute}:${p.second}`;
+}
+
+function formatDate(tz) {
+  const p = getParts(tz);
+
+  return `${p.weekday}, ${p.month} ${p.day}`;
+}
+
+function getHour(tz) {
+  return Number(getParts(tz).hour);
+}
+
+function getTimezoneOffset(tz) {
+  const now = new Date();
+
+  const utc = new Date(
+    now.toLocaleString("en-US", { timeZone: "UTC" })
+  );
+
+  const target = new Date(
+    now.toLocaleString("en-US", { timeZone: tz })
+  );
+
+  const diff = (target - utc) / (1000 * 60 * 60);
+
+  const sign = diff >= 0 ? "+" : "-";
+  const abs = Math.abs(diff);
+
+  const hours = Math.floor(abs);
+  const minutes = Math.round((abs - hours) * 60);
+
+  return `UTC${sign}${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")}`;
+}
+
+function getPeriod(hour) {
+  if (hour < 5) return "Night";
+  if (hour < 12) return "Morning";
+  if (hour < 17) return "Afternoon";
+  if (hour < 21) return "Evening";
+
+  return "Night";
+}
 
 function buildTicks() {
   const oldTicks = document.querySelectorAll(".tick");
@@ -62,7 +132,8 @@ function buildTicks() {
 
     const radius = i % 5 === 0 ? 132 : 142;
 
-    tick.style.transform = `translate(-50%,-100%) rotate(${i * 6}deg) translateY(-${radius}px)`;
+    tick.style.transform =
+      `translate(-50%,-100%) rotate(${i * 6}deg) translateY(-${radius}px)`;
 
     face.appendChild(tick);
   }
@@ -70,30 +141,17 @@ function buildTicks() {
 
 buildTicks();
 
-function formatTime(tz) {
-  return moment().tz(tz).format("HH:mm:ss");
-}
-function formatDate(tz) {
-  return moment().tz(tz).format("dddd, MMMM D");
-}
-function getOffset(tz) {
-  return moment.tz(tz).format("Z");
-}
-
-function getPeriod(hour) {
-  if (hour < 5) return "Night";
-  if (hour < 12) return "Morning";
-  if (hour < 17) return "Afternoon";
-  if (hour < 21) return "Evening";
-  return "Night";
-}
-
 function updateClock() {
-  const now = moment().tz(activeCity.tz);
+  const hour = getHour(activeCity.tz);
 
-  const hour = now.hours();
-  const minute = now.minutes();
-  const second = now.seconds();
+  const time = formatTime(activeCity.tz);
+
+  const date = formatDate(activeCity.tz);
+
+  const parts = time.split(":");
+
+  const minute = Number(parts[1]);
+  const second = Number(parts[2]);
 
   const hourDeg = ((hour % 12) + minute / 60) * 30;
   const minuteDeg = (minute + second / 60) * 6;
@@ -103,13 +161,15 @@ function updateClock() {
   minuteHand.style.transform = `rotate(${minuteDeg}deg) translateY(10px)`;
   secondHand.style.transform = `rotate(${secondDeg}deg) translateY(14px)`;
 
-  digitalTime.textContent = now.format("HH:mm:ss");
-  heroClock.textContent = now.format("HH:mm:ss");
-  heroDate.textContent = formatDate(activeCity.tz);
+  digitalTime.textContent = time;
+  heroClock.textContent = time;
+  heroDate.textContent = date;
 
   dayPeriod.textContent = getPeriod(hour);
 
-  timezoneChip.textContent = `UTC${getOffset(activeCity.tz)}`;
+  timezoneChip.textContent =
+    getTimezoneOffset(activeCity.tz);
+
   timezoneName.textContent = activeCity.tz;
 }
 
@@ -120,6 +180,7 @@ function renderCities(list) {
 
   list.forEach((city) => {
     const card = document.createElement("div");
+
     card.className = "city-card";
 
     if (city.city === activeCity.city) {
@@ -127,20 +188,21 @@ function renderCities(list) {
     }
 
     card.innerHTML = `
-<div class="city-card-top">
-<div>
-<h3>${city.city}</h3>
-<small>${city.country}</small>
-</div>
+      <div class="city-card-top">
+        <div>
+          <h3>${city.city}</h3>
+          <small>${city.country}</small>
+        </div>
 
-<div class="city-card-time">
-${formatTime(city.tz)}
-</div>
-</div>
-`;
+        <div class="city-card-time">
+          ${formatTime(city.tz)}
+        </div>
+      </div>
+    `;
 
     card.addEventListener("click", () => {
       activeCity = city;
+
       cityName.textContent = city.city;
 
       document.querySelectorAll(".city-card").forEach((el) => {
@@ -159,8 +221,11 @@ ${formatTime(city.tz)}
 function populateCompare() {
   cities.forEach((city) => {
     const optionA = document.createElement("option");
+
     optionA.value = city.tz;
-    optionA.textContent = `${city.city} (${city.country})`;
+
+    optionA.textContent =
+      `${city.city} (${city.country})`;
 
     const optionB = optionA.cloneNode(true);
 
@@ -172,29 +237,43 @@ function populateCompare() {
   compareB.value = "Europe/London";
 }
 
+function getOffsetHours(tz) {
+  const now = new Date();
+
+  const utc = new Date(
+    now.toLocaleString("en-US", { timeZone: "UTC" })
+  );
+
+  const target = new Date(
+    now.toLocaleString("en-US", { timeZone: tz })
+  );
+
+  return (target - utc) / (1000 * 60 * 60);
+}
+
 function updateComparison() {
   const tzA = compareA.value;
   const tzB = compareB.value;
 
   const cityA = cities.find((c) => c.tz === tzA);
   const cityB = cities.find((c) => c.tz === tzB);
-  const timeA = moment().tz(tzA);
-  const timeB = moment().tz(tzB);
 
-  compareATime.textContent = timeA.format("HH:mm");
-  compareBTime.textContent = timeB.format("HH:mm");
+  compareATime.textContent = formatTime(tzA).slice(0, 5);
+  compareBTime.textContent = formatTime(tzB).slice(0, 5);
+
   compareAName.textContent = cityA.city;
   compareBName.textContent = cityB.city;
 
-  const offsetA = timeA.utcOffset();
-  const offsetB = timeB.utcOffset();
+  const offsetA = getOffsetHours(tzA);
+  const offsetB = getOffsetHours(tzB);
 
-  const diff = (offsetA - offsetB) / 60;
+  const diff = offsetA - offsetB;
 
   if (diff === 0) {
     timeDifference.textContent = "Same";
   } else {
-    timeDifference.textContent = `${Math.abs(diff)}h ${diff > 0 ? "ahead" : "behind"}`;
+    timeDifference.textContent =
+      `${Math.abs(diff)}h ${diff > 0 ? "ahead" : "behind"}`;
   }
 }
 
@@ -208,7 +287,7 @@ function searchCities(value) {
     (city) =>
       city.city.toLowerCase().includes(query) ||
       city.country.toLowerCase().includes(query) ||
-      city.tz.toLowerCase().includes(query),
+      city.tz.toLowerCase().includes(query)
   );
 
   renderCities(filtered);
@@ -225,12 +304,12 @@ function searchCities(value) {
     item.className = "search-item";
 
     item.innerHTML = `
-<div>
-<strong>${city.city}</strong>
-</div>
+      <div>
+        <strong>${city.city}</strong>
+      </div>
 
-<small>${city.country}</small>
-`;
+      <small>${city.country}</small>
+    `;
 
     item.addEventListener("click", () => {
       activeCity = city;
