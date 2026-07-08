@@ -70,6 +70,8 @@ toolxd
 │   └── style.css
 ├── index.html
 └── tools
+    ├── atemplate
+    │   └── atemplate.html
     ├── hashgen
     │   ├── hashgen.css
     │   ├── hashgen.html
@@ -86,6 +88,10 @@ toolxd
     │   ├── passwordgen.css
     │   ├── passwordgen.html
     │   └── passwordgen.js
+    ├── qrcode
+    │   ├── qrcode.css
+    │   ├── qrcode.html
+    │   └── qrcode.js
     ├── spinwheel
     │   ├── spinwheel.css
     │   ├── spinwheel.html
@@ -122,6 +128,6 @@ Almost all tools run inside the browser using Browser APIs and LocalStorage. So 
 
 ChatGPT and Codex were used for: 
 
-I used ChatGPT occasionally to help me with creating initial structure and helping me understand JavaScript logic. I used codex once to find performance improvements and help create global css. All features, design decisios and final integration were implemented by me.
+I used ChatGPT occasionally to help me with creating initial structure and helping me understand JavaScript logic. I used codex once to find performance improvements and help create global css. All features, design decisions and final integration were implemented by me.
 
 ---
