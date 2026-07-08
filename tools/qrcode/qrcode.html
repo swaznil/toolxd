@@ -1,30 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToolXD • QR Code Generator</title>
 
-    <title>ToolXD • Qr Code Generator</title>
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="qrcode.css">
 
-    <link rel="stylesheet" href="../../css/global.css">
-    <link rel="stylesheet" href="qrcode.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="bg-grid"></div>
+  <div class="gradient gradient-1"></div>
+  <div class="gradient gradient-2"></div>
+  <div class="noise"></div>
 
-    <main class="page">
+  <main class="page">
+    <nav>
+      <div class="logo">ToolXD</div>
+      <a href="../../index.html" class="back">← Back</a>
+    </nav>
 
-      <nav>
-        <div class="logo">ToolXD</div>
-        <a href="../../index.html" class="back">← Back</a>
-      </nav>
+    <section class="layout">
+      <div class="left">
+        <div class="eyebrow">Browser Native Utility \|/ Quick Sharing</div>
+        <h1>QR Code<br>Generator.</h1>
+        <p class="desc">
+          Turn links, text, emails, phone numbers, and Wi-Fi details into clean QR codes instantly.
+        </p>
 
-    </main>
+        <div class="meta">
+          <div class="line"></div>
+          <span> Fast • Clean • Local Preview </span>
+          <div class="line"></div>
+        </div>
+      </div>
 
-<script src="qrcode.js"></script>
+      <div class="right panel">
+        <div class="tabs">
+          <button class="tab active" data-type="text" type="button">Text</button>
+          <button class="tab" data-type="url" type="button">URL</button>
+          <button class="tab" data-type="email" type="button">Email</button>
+          <button class="tab" data-type="phone" type="button">Phone</button>
+          <button class="tab" data-type="wifi" type="button">Wi-Fi</button>
+        </div>
+
+        <div class="form" id="formArea"></div>
+
+        <div class="actions">
+          <button class="generate" id="generateBtn" type="button">Generate QR</button>
+          <button class="ghost" id="copyBtn" type="button">Copy Data</button>
+          <button class="ghost" id="downloadBtn" type="button">Download PNG</button>
+        </div>
+
+        <div class="qr-wrap">
+          <div id="qrcode" class="qrcode"></div>
+          <div class="hint" id="hintText">Your QR code will appear here.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="qrcode.js"></script>
 </body>
 </html>
