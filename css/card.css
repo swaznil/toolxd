@@ -6,16 +6,17 @@
   padding: 2rem;
 }
 
-.password-card {grid-column: span 3;grid-row: span 2;}
-.timer-card {grid-column: span 2;grid-row: span 2;}
-.metadata-card {grid-column: span 2;grid-row: span 4;}
-.speech-card {grid-column: span 3;grid-row: span 2;}
-.counter-card {grid-column: span 2;grid-row: span 2;}
-.world-card {grid-column: span 2;grid-row: span 3;}
+.password-card {grid-column: span 2;grid-row: span 3;}
 .hash-card {grid-column: span 3;grid-row: span 2;}
-.palette-card {grid-column: span 4;grid-row: span 2;}
+.qr-card {grid-column: span 3;grid-row: span 2;}
+.timer-card {grid-column: span 2;grid-row: span 3;}
+.world-card {grid-column: span 2;grid-row: span 3;}
+.counter-card {grid-column: span 3;grid-row: span 2;}
+.speech-card {grid-column: span 3;grid-row: span 2;}
+.metadata-card {grid-column: span 2;grid-row: span 4;}
 .wheel-card {grid-column: span 3;grid-row: span 2;}
-.qr-card{grid-column: span 2;grid-row: span 2;}
+.palette-card {grid-column: span 6;grid-row: span 2;}
+
 
 .card {
   position: relative;
