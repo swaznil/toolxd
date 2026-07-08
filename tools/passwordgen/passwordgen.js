@@ -1,16 +1,19 @@
 const password = document.getElementById("password");
+
 const copyBtn = document.getElementById("copyBtn");
 const generateBtn = document.getElementById("generateBtn");
 const slider = document.getElementById("slider");
+
 const lengthInput = document.getElementById("lengthInput");
 const uppercase = document.getElementById("uppercase");
 const lowercase = document.getElementById("lowercase");
 const numbers = document.getElementById("numbers");
 const symbols = document.getElementById("symbols");
 
-function updateSlider() {
-  const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
 
+function updateSlider() {
+
+  const value = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
   slider.style.background = `linear-gradient(
     90deg,
     #111 ${value}%,
@@ -19,16 +22,16 @@ function updateSlider() {
 }
 
 slider.addEventListener("input", () => {
-  lengthInput.value = slider.value;
 
+  lengthInput.value = slider.value;
   updateSlider();
 });
 
 lengthInput.addEventListener("input", () => {
+
   let value = parseInt(lengthInput.value);
 
   if (isNaN(value)) value = 6;
-
   if (value < 6) value = 6;
   if (value > 64) value = 64;
 
@@ -38,14 +41,12 @@ lengthInput.addEventListener("input", () => {
   updateSlider();
 });
 
-/* PASSWORD */
-
 function generatePassword() {
+
   const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const lower = "abcdefghijklmnopqrstuvwxyz";
   const nums = "0123456789";
   const syms = "!@#$%^&*()_+=-{}[]<>?/";
-
   let chars = "";
 
   if (uppercase.checked) chars += upper;
@@ -54,8 +55,8 @@ function generatePassword() {
   if (symbols.checked) chars += syms;
 
   if (chars.length === 0) {
-    password.textContent = "Select at least one option";
 
+    password.textContent = "Select at least one option";
     return;
   }
 
@@ -70,6 +71,7 @@ function generatePassword() {
 }
 
 function calculateStrength(passwordValue) {
+
   let charsetSize = 0;
 
   if (/[A-Z]/.test(passwordValue)) charsetSize += 26;
@@ -91,36 +93,42 @@ function calculateStrength(passwordValue) {
     label = "Weak";
     width = 25;
     estimate = "a few seconds";
-  } else if (entropy < 60) {
+  } 
+  else if (entropy < 60) {
+
     label = "Moderate";
     width = 50;
     estimate = "a few hours";
-  } else if (entropy < 80) {
+  } 
+  else if (entropy < 80) {
+
     label = "Strong";
     width = 75;
     estimate = "thousands of years";
-  } else {
+  } 
+  else {
+
     label = "Very Strong";
     width = 100;
     estimate = "millions of years";
   }
-
+  
   strengthText.textContent = label;
   strengthFill.style.width = width + "%";
-
   crackTime.textContent = `Estimated crack time: ${estimate}`;
 }
 
 generateBtn.addEventListener("click", generatePassword);
 
 copyBtn.addEventListener("click", async () => {
-  await navigator.clipboard.writeText(password.textContent);
 
+  await navigator.clipboard.writeText(password.textContent);
   copyBtn.classList.add("copied");
 
   setTimeout(() => {
     copyBtn.classList.remove("copied");
   }, 1600);
+
 });
 
 updateSlider();

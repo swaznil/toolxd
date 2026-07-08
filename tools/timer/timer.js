@@ -37,33 +37,33 @@ function formatMs(ms) {
 }
 
 function moveBubble(ms) {
-  const radius = window.innerWidth <= 980 ? 130 : 160;
 
+  const radius = window.innerWidth <= 980 ? 130 : 160;
   let angle;
 
   if (mode === "timer") {
+
     angle = -(ms / 1000) * 2;
   } else {
+
     angle = (ms / 1000) * 2;
   }
 
   const x = Math.cos(angle - Math.PI / 2) * radius;
   const y = Math.sin(angle - Math.PI / 2) * radius;
-
   bubble.style.transform = `translate(${x}px, ${y}px)`;
 }
 
 function playAlarm() {
-  const audio = new Audio(
-    "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",
-  );
+
+  const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",);
 
   audio.play();
 }
 
 function updateStopwatch() {
-  elapsed = Date.now() - startTime;
 
+  elapsed = Date.now() - startTime;
   display.textContent = formatTime(elapsed);
   subDisplay.textContent = formatMs(elapsed);
 
@@ -74,8 +74,8 @@ function updateTimer() {
   const remaining = timerDuration - (Date.now() - startTime);
 
   if (remaining <= 0) {
-    clearInterval(interval);
 
+    clearInterval(interval);
     running = false;
     display.textContent = "00:00:00";
     subDisplay.textContent = "Done";
@@ -93,13 +93,13 @@ function updateTimer() {
 
 function toggleStart() {
   if (!running) {
-    running = true;
 
+    running = true;
     startBtn.textContent = "Pause";
 
     if (mode === "stopwatch") {
-      startTime = Date.now() - elapsed;
 
+      startTime = Date.now() - elapsed;
       interval = setInterval(updateStopwatch, 10);
     }
 
@@ -115,10 +115,9 @@ function toggleStart() {
       interval = setInterval(updateTimer, 10);
     }
   } else {
-    running = false;
 
     clearInterval(interval);
-
+    running = false;
     startBtn.textContent = "Start";
 
     if (mode === "timer") {
@@ -149,18 +148,15 @@ function addLap() {
     if (!running) return;
 
     const lap = document.createElement("div");
-
     lap.className = "lap";
-
-    lap.innerHTML = `
-      <span>
+    lap.innerHTML = 
+    `<span>
         Lap ${laps.children.length + 1}
       </span>
 
       <span>
         ${formatTime(elapsed)}.${formatMs(elapsed)}
-      </span>
-    `;
+      </span>`;
 
     laps.prepend(lap);
   }
@@ -169,8 +165,8 @@ function addLap() {
     timerDuration += 60000;
 
     if (!running) {
-      display.textContent = formatTime(timerDuration);
 
+      display.textContent = formatTime(timerDuration);
       subDisplay.textContent = formatMs(timerDuration);
     }
 
@@ -189,10 +185,12 @@ function addLap() {
     laps.prepend(lap);
   }
 }
+
 lapBtn.addEventListener("click", addLap);
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
+
     tabs.forEach((t) => t.classList.remove("active"));
     tab.classList.add("active");
     mode = tab.dataset.mode;
@@ -200,6 +198,7 @@ tabs.forEach((tab) => {
     resetEverything();
 
     if (mode === "timer") {
+
       timerInputs.style.display = "flex";
       lapBtn.style.display = "inline-flex";
       lapBtn.textContent = "Add Time";
@@ -208,6 +207,7 @@ tabs.forEach((tab) => {
         Add Time
       `;
     } else {
+
       timerInputs.style.display = "none";
       lapBtn.style.display = "inline-flex";
       lapBtn.textContent = "Lap";
@@ -220,6 +220,7 @@ tabs.forEach((tab) => {
 });
 
 document.addEventListener("keydown", (e) => {
+
   const tag = document.activeElement.tagName;
 
   if (tag === "INPUT" || tag === "TEXTAREA") return;
@@ -239,6 +240,7 @@ document.addEventListener("keydown", (e) => {
   }
 
   if (e.key === "1") {
+
     tabs.forEach((t) => t.classList.remove("active"));
     tabs[0].classList.add("active");
     mode = "stopwatch";
