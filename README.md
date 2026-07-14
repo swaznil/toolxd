@@ -1,8 +1,7 @@
 # toolxd
 
-ToolxD is a collection of browser-based utility tools. Designed with a modern interface and a premium ad free visual experience, it is completely adless and really really fast.
 
-Built entirely using vanilla HTML, CSS and JavaScript, most tools work without an internet connection, but some tools, like text to speech, do require it.
+ToolxD is a collection of browser-based utility tools built with vanilla HTML, CSS and JavaScript. The project focuses on fast loading, a consistent UI and zero advertisements.  Most tools work without an internet connection, but some tools, like text to speech, do require it.
 
 
 ## Motivation
@@ -11,7 +10,7 @@ Whenever I needed to use a simple tool like world time, a password generator or 
 I usually search the web for it and come across websites providing these services but with lots of 
 ads, popups and overall ugly UI/UX making it really difficult to work with it.
 
-So I thought, I could build those tools myself and keep all of them in a single clean webinterface with a consistent style and an ad free premium experience. So I started building ToolxD and adding more and more new tools.
+So I thought, I could build those tools myself and keep all of them in a single clean web interface with a consistent style and an ad free premium experience. So I started building ToolxD and adding more and more new tools.
 
 ## Live Demo
 
@@ -29,9 +28,11 @@ swaznil.github.io/toolxd
 
 ## Features
 
+- Independent tools with their own HTML, CSS and JS
+- Works offline after the first load (except API-dependent tools)
 - No backend required
 - Responsive layout
-- Many tools have keyboard shortcuts
+- Keyboard shortcuts for many tools
 - lightweight and fast
 - Reusable global CSS
 
@@ -118,9 +119,9 @@ toolxd
 
 ## How It Works
 
-ToolxD is built entirely using vanilla HTML, CSS, and JavaScript. There is no backend. Each tool exists as an independent module with its own HTML, CSS, and JavaScript files.
+Each utility lives in its own folder with separate HTML, CSS and JavaScript files, making it easy to develop or add new tools without affecting the rest of the project.
 
-Almost all tools run inside the browser using Browser APIs and LocalStorage. So these tool work offline after loading. Some tools such as text to Speech, rely on browser provided APIs like the Web Speech API and may require an internet connection depending on browser support. The project also uses reusable global CSS components across all tools.
+Most tools run entirely in the browser and store data locally, so they continue to work offline after the initial load. Except for Tools such as Text to Speech, use the Web Speech API and may require an internet connection depending on browser support.The project also uses reusable global CSS components across all tools.
 
 ---
 
