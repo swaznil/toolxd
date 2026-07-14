@@ -1,11 +1,12 @@
 const colorPicker = document.getElementById("colorPicker");
 const hexInput = document.getElementById("hexInput");
-const generateBtn = document.getElementById("generateBtn");
-const paletteGrid = document.getElementById("paletteGrid");
 const hexValue = document.getElementById("hexValue");
 const rgbValue = document.getElementById("rgbValue");
 const hslValue = document.getElementById("hslValue");
 const presets = document.querySelectorAll(".preset");
+
+const paletteGrid = document.getElementById("paletteGrid");
+const generateBtn = document.getElementById("generateBtn");
 const styleButtons = document.querySelectorAll(".style-btn");
 
 let currentStyle = "modern";
@@ -14,38 +15,35 @@ presets.forEach((preset) => {
   preset.style.background = preset.dataset.color;
 
   preset.addEventListener("click", () => {
+
     colorPicker.value = preset.dataset.color;
-
     hexInput.value = preset.dataset.color;
-
     generatePalette();
   });
 });
 
 styleButtons.forEach((button) => {
   button.addEventListener("click", () => {
+
     styleButtons.forEach((btn) => btn.classList.remove("active"));
-
     button.classList.add("active");
-    
     currentStyle = button.dataset.style;
-
     generatePalette();
   });
 });
 
 colorPicker.addEventListener("input", () => {
-  hexInput.value = colorPicker.value;
 
+  hexInput.value = colorPicker.value;
   generatePalette();
 });
 
 hexInput.addEventListener("input", () => {
+
   const value = hexInput.value;
-
   if (/^#([0-9A-F]{6})$/i.test(value)) {
-    colorPicker.value = value;
 
+    colorPicker.value = value;
     generatePalette();
   }
 });
@@ -53,10 +51,10 @@ hexInput.addEventListener("input", () => {
 generateBtn.addEventListener("click", generatePalette);
 
 function hexToRgb(hex) {
+
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-
   return { r, g, b };
 }
 
@@ -66,8 +64,7 @@ function rgbToHex(r, g, b) {
     [r, g, b]
       .map((value) =>
         Math.max(0, Math.min(255, value)).toString(16).padStart(2, "0"),
-      )
-      .join("")
+      ).join("")
   );
 }
 
@@ -85,9 +82,10 @@ function rgbToHsl(r, g, b) {
 
   if (max === min) {
     h = s = 0;
-  } else {
-    const d = max - min;
+  } 
+  else {
 
+    const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
     switch (max) {
@@ -101,7 +99,6 @@ function rgbToHsl(r, g, b) {
         h = (r - g) / d + 4;
         break;
     }
-
     h /= 6;
   }
 
@@ -209,15 +206,14 @@ function buildPalette(base) {
     }
 
     const rgb = hslToRgb(hue, color[1], color[2]);
-
     return rgbToHex(rgb.r, rgb.g, rgb.b);
   });
 }
 
 function generatePalette() {
+
   const base = colorPicker.value;
   const palette = buildPalette(base);
-
   paletteGrid.innerHTML = "";
   palette.forEach((color) => {
     const card = document.createElement("div");
@@ -236,14 +232,11 @@ function generatePalette() {
     `;
 
     paletteGrid.appendChild(card);
-
     const button = card.querySelector("button");
-
     button.addEventListener("click", async () => {
+
       await navigator.clipboard.writeText(color);
-
       const original = color;
-
       button.textContent = "Copied";
       button.classList.add("copied");
 
@@ -256,9 +249,7 @@ function generatePalette() {
 
   const rgb = hexToRgb(base);
   const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
-
   hexValue.textContent = base;
-
   rgbValue.textContent = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
   hslValue.textContent = `${hsl.h}°, ${hsl.s}%, ${hsl.l}%`;
 }

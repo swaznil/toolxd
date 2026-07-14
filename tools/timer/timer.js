@@ -12,255 +12,327 @@ const hours = document.getElementById("hours");
 const minutes = document.getElementById("minutes");
 const seconds = document.getElementById("seconds");
 
-let mode = "stopwatch";
-let running = false;
-let elapsed = 0;
-let interval;
-let startTime = 0;
-let timerDuration = 0;
+const state = {
+  mode: "stopwatch",
+  running: false,
+  stopwatchElapsed: 0,
+  stopwatchStartAt: 0,
+  timerRemaining: 0,
+  timerStartAt: 0,
+  timerEndAt: 0,
+  timerDone: false,
+  rafId: null,
+};
 
-function formatTime(ms) {
-  const totalSeconds = Math.floor(ms / 1000);
+function formatClock(ms) {
+  const safeMs = Math.max(0, Math.floor(ms));
+  const totalSeconds = Math.floor(safeMs / 1000);
   const hrs = Math.floor(totalSeconds / 3600);
   const mins = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
 
-  return `
-  ${String(hrs).padStart(2, "0")}:
-  ${String(mins).padStart(2, "0")}:
-  ${String(secs).padStart(2, "0")}
-  `.replace(/\s/g, "");
+  return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 }
 
 function formatMs(ms) {
-  return String(ms % 1000).padStart(3, "0");
+  return String(Math.floor(Math.max(0, ms)) % 1000).padStart(3, "0");
 }
 
-function moveBubble(ms) {
+function getBubbleRadius() {
+  return window.innerWidth <= 980 ? 130 : 160;
+}
 
-  const radius = window.innerWidth <= 980 ? 130 : 160;
-  let angle;
+function resetBubble() {
+  const radius = getBubbleRadius();
+  bubble.style.transform = `translate(0px, -${radius}px)`;
+}
 
-  if (mode === "timer") {
-
-    angle = -(ms / 1000) * 2;
-  } else {
-
-    angle = (ms / 1000) * 2;
-  }
-
+function setBubblePosition(ms) {
+  const radius = getBubbleRadius();
+  const secondsValue = ms / 1000;
+  const angle = state.mode === "timer" ? -(secondsValue * 2) : secondsValue * 2;
   const x = Math.cos(angle - Math.PI / 2) * radius;
   const y = Math.sin(angle - Math.PI / 2) * radius;
   bubble.style.transform = `translate(${x}px, ${y}px)`;
 }
 
+function renderClock(ms) {
+  display.textContent = formatClock(ms);
+  subDisplay.textContent = formatMs(ms);
+}
+
+function renderTimerDone() {
+  display.textContent = "00:00:00";
+  subDisplay.textContent = "Done";
+  resetBubble();
+}
+
+function getTimerInputMs() {
+  const h = Math.max(0, Number(hours.value) || 0);
+  const m = Math.max(0, Number(minutes.value) || 0);
+  const s = Math.max(0, Number(seconds.value) || 0);
+
+  return h * 3600000 + m * 60000 + s * 1000;
+}
+
 function playAlarm() {
-
-  const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg",);
-
-  audio.play();
+  const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+  audio.play().catch(() => {});
 }
 
-function updateStopwatch() {
-
-  elapsed = Date.now() - startTime;
-  display.textContent = formatTime(elapsed);
-  subDisplay.textContent = formatMs(elapsed);
-
-  moveBubble(elapsed);
+function stopLoop() {
+  if (state.rafId !== null) {
+    cancelAnimationFrame(state.rafId);
+    state.rafId = null;
+  }
 }
 
-function updateTimer() {
-  const remaining = timerDuration - (Date.now() - startTime);
-
-  if (remaining <= 0) {
-
-    clearInterval(interval);
-    running = false;
-    display.textContent = "00:00:00";
-    subDisplay.textContent = "Done";
-    startBtn.textContent = "Start";
-
-    playAlarm();
+function renderFrame(now) {
+  if (!state.running) {
+    state.rafId = null;
     return;
   }
 
-  display.textContent = formatTime(remaining);
-  subDisplay.textContent = formatMs(remaining);
+  if (state.mode === "stopwatch") {
+    const elapsed = now - state.stopwatchStartAt;
+    state.stopwatchElapsed = elapsed;
+    renderClock(elapsed);
+    setBubblePosition(elapsed);
+    state.rafId = requestAnimationFrame(renderFrame);
+    return;
+  }
 
-  moveBubble(remaining);
+  const remaining = state.timerEndAt - now;
+
+  if (remaining <= 0) {
+    finishTimer();
+    return;
+  }
+
+  state.timerRemaining = remaining;
+  renderClock(remaining);
+  setBubblePosition(remaining);
+  state.rafId = requestAnimationFrame(renderFrame);
+}
+
+function startLoop() {
+  stopLoop();
+  state.rafId = requestAnimationFrame(renderFrame);
+}
+
+function renderStaticView() {
+  if (state.mode === "stopwatch") {
+    if (state.stopwatchElapsed > 0) {
+      renderClock(state.stopwatchElapsed);
+      setBubblePosition(state.stopwatchElapsed);
+      return;
+    }
+
+    display.textContent = "00:00:00";
+    subDisplay.textContent = "000";
+    resetBubble();
+    return;
+  }
+
+  if (state.timerDone) {
+    renderTimerDone();
+    return;
+  }
+
+  const preview = state.timerRemaining > 0 ? state.timerRemaining : getTimerInputMs();
+  renderClock(preview);
+  resetBubble();
+}
+
+function syncModeUI() {
+  tabs.forEach((tab) => {
+    tab.classList.toggle("active", tab.dataset.mode === state.mode);
+  });
+
+  const timerMode = state.mode === "timer";
+
+  timerInputs.style.display = timerMode ? "flex" : "none";
+  lapBtn.style.display = "inline-flex";
+  lapBtn.textContent = timerMode ? "Add Time" : "Lap";
+  lapShortcut.innerHTML = timerMode ? `<kbd>L</kbd> Add Time` : `<kbd>L</kbd> Lap`;
+}
+
+function resetEverything() {
+  stopLoop();
+  state.running = false;
+  state.stopwatchElapsed = 0;
+  state.stopwatchStartAt = 0;
+  state.timerRemaining = 0;
+  state.timerStartAt = 0;
+  state.timerEndAt = 0;
+  state.timerDone = false;
+  startBtn.textContent = "Start";
+  laps.innerHTML = "";
+  renderStaticView();
+}
+
+function finishTimer() {
+  stopLoop();
+  state.running = false;
+  state.timerRemaining = 0;
+  state.timerStartAt = 0;
+  state.timerEndAt = 0;
+  state.timerDone = true;
+  startBtn.textContent = "Start";
+  renderTimerDone();
+  playAlarm();
 }
 
 function toggleStart() {
-  if (!running) {
-
-    running = true;
-    startBtn.textContent = "Pause";
-
-    if (mode === "stopwatch") {
-
-      startTime = Date.now() - elapsed;
-      interval = setInterval(updateStopwatch, 10);
+  if (state.mode === "stopwatch") {
+    if (!state.running) {
+      state.running = true;
+      state.stopwatchStartAt = performance.now() - state.stopwatchElapsed;
+      startBtn.textContent = "Pause";
+      startLoop();
+      return;
     }
 
-    if (mode === "timer") {
-      if (timerDuration === 0) {
-        timerDuration =
-          Number(hours.value) * 3600000 +
-          Number(minutes.value) * 60000 +
-          Number(seconds.value) * 1000;
-      }
-
-      startTime = Date.now();
-      interval = setInterval(updateTimer, 10);
-    }
-  } else {
-
-    clearInterval(interval);
-    running = false;
+    state.stopwatchElapsed = performance.now() - state.stopwatchStartAt;
+    state.running = false;
     startBtn.textContent = "Start";
-
-    if (mode === "timer") {
-      timerDuration = timerDuration - (Date.now() - startTime);
-    }
+    stopLoop();
+    renderStaticView();
+    return;
   }
-}
 
-startBtn.addEventListener("click", toggleStart);
+  if (!state.running) {
+    if (state.timerDone || state.timerRemaining <= 0) {
+      state.timerRemaining = getTimerInputMs();
+      state.timerDone = false;
+    }
 
-function resetEverything() {
-  clearInterval(interval);
+    if (state.timerRemaining <= 0) {
+      renderStaticView();
+      return;
+    }
 
-  running = false;
-  elapsed = 0;
-  timerDuration = 0;
-  display.textContent = "00:00:00";
-  subDisplay.textContent = "000";
+    state.running = true;
+    state.timerStartAt = performance.now();
+    state.timerEndAt = state.timerStartAt + state.timerRemaining;
+    startBtn.textContent = "Pause";
+    startLoop();
+    return;
+  }
+
+  state.timerRemaining = Math.max(0, state.timerEndAt - performance.now());
+  state.running = false;
   startBtn.textContent = "Start";
-  laps.innerHTML = "";
-  bubble.style.transform = "translate(0px,-160px)";
+  stopLoop();
+  renderStaticView();
 }
 
-resetBtn.addEventListener("click", resetEverything);
-
-function addLap() {
-  if (mode === "stopwatch") {
-    if (!running) return;
-
-    const lap = document.createElement("div");
-    lap.className = "lap";
-    lap.innerHTML = 
-    `<span>
-        Lap ${laps.children.length + 1}
-      </span>
-
-      <span>
-        ${formatTime(elapsed)}.${formatMs(elapsed)}
-      </span>`;
-
-    laps.prepend(lap);
-  }
-
-  if (mode === "timer") {
-    timerDuration += 60000;
-
-    if (!running) {
-
-      display.textContent = formatTime(timerDuration);
-      subDisplay.textContent = formatMs(timerDuration);
-    }
+function addLapOrTime() {
+  if (state.mode === "stopwatch") {
+    if (!state.running) return;
 
     const lap = document.createElement("div");
     lap.className = "lap";
     lap.innerHTML = `
-      <span>
-        +1 Minute
-      </span>
-
-      <span>
-        ${formatTime(timerDuration)}
-      </span>
+      <span>Lap ${laps.children.length + 1}</span>
+      <span>${formatClock(state.stopwatchElapsed)}.${formatMs(state.stopwatchElapsed)}</span>
     `;
-
     laps.prepend(lap);
+    return;
   }
+
+  const base = state.running
+    ? state.timerRemaining
+    : state.timerRemaining > 0
+      ? state.timerRemaining
+      : getTimerInputMs();
+
+  state.timerRemaining = base + 60000;
+  state.timerDone = false;
+
+  if (state.running) {
+    state.timerEndAt += 60000;
+    renderClock(state.timerRemaining);
+    setBubblePosition(state.timerRemaining);
+  } else {
+    renderStaticView();
+  }
+
+  const lap = document.createElement("div");
+  lap.className = "lap";
+  lap.innerHTML = `
+    <span>+1 Minute</span>
+    <span>${formatClock(state.timerRemaining)}</span>
+  `;
+  laps.prepend(lap);
 }
 
-lapBtn.addEventListener("click", addLap);
+function switchMode(nextMode) {
+  if (state.mode === nextMode) return;
+  state.mode = nextMode;
+  syncModeUI();
+  resetEverything();
+}
+
+startBtn.addEventListener("click", toggleStart);
+resetBtn.addEventListener("click", resetEverything);
+lapBtn.addEventListener("click", addLapOrTime);
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-
-    tabs.forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
-    mode = tab.dataset.mode;
-
-    resetEverything();
-
-    if (mode === "timer") {
-
-      timerInputs.style.display = "flex";
-      lapBtn.style.display = "inline-flex";
-      lapBtn.textContent = "Add Time";
-      lapShortcut.innerHTML = `
-        <kbd>L</kbd>
-        Add Time
-      `;
-    } else {
-
-      timerInputs.style.display = "none";
-      lapBtn.style.display = "inline-flex";
-      lapBtn.textContent = "Lap";
-      lapShortcut.innerHTML = `
-        <kbd>L</kbd>
-        Lap
-      `;
-    }
+    switchMode(tab.dataset.mode);
   });
 });
 
 document.addEventListener("keydown", (e) => {
-
-  const tag = document.activeElement.tagName;
+  const tag = document.activeElement?.tagName;
 
   if (tag === "INPUT" || tag === "TEXTAREA") return;
 
   if (e.code === "Space") {
     e.preventDefault();
-
     toggleStart();
+    return;
   }
 
-  if (e.key.toLowerCase() === "r") {
+  if (e.code === "KeyR") {
+    e.preventDefault();
     resetEverything();
+    return;
   }
 
-  if (e.key.toLowerCase() === "l") {
-    addLap();
+  if (e.code === "KeyL") {
+    e.preventDefault();
+    addLapOrTime();
+    return;
   }
 
-  if (e.key === "1") {
-
-    tabs.forEach((t) => t.classList.remove("active"));
-    tabs[0].classList.add("active");
-    mode = "stopwatch";
-
-    resetEverything();
-
-    timerInputs.style.display = "none";
-    lapBtn.style.display = "inline-flex";
+  if (e.code === "Digit1") {
+    e.preventDefault();
+    switchMode("stopwatch");
+    return;
   }
 
-  if (e.key === "2") {
-    tabs.forEach((t) => t.classList.remove("active"));
-    tabs[1].classList.add("active");
-    mode = "timer";
-
-    resetEverything();
-
-    timerInputs.style.display = "flex";
-    lapBtn.style.display = "none";
+  if (e.code === "Digit2") {
+    e.preventDefault();
+    switchMode("timer");
   }
 });
 
-bubble.style.transform = "translate(0px,-160px)";
+[hours, minutes, seconds].forEach((input) => {
+  input.addEventListener("input", () => {
+    if (state.mode === "timer" && !state.running && !state.timerDone) {
+      renderStaticView();
+    }
+  });
+});
+
+window.addEventListener("resize", () => {
+  if (!state.running) {
+    renderStaticView();
+  }
+});
+
+resetBubble();
+syncModeUI();
+renderStaticView();
